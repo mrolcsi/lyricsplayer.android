@@ -14,6 +14,51 @@
         android:layout_alignParentTop="true"
         android:layout_margin="@dimen/margin_medium"/>
 
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rlLyrics"
+        android:layout_alignTop="@+id/imgCover"
+        android:layout_alignBottom="@+id/imgCover">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Previous Line"
+            android:id="@+id/tvTopLine"
+            android:layout_centerHorizontal="true"
+            android:textColor="@android:color/white"
+            android:layout_above="@+id/tvMiddleLine"
+            android:background="@color/lyrics_background"
+            android:padding="@dimen/margin_medium"
+            android:alpha="0.6"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Current Line"
+            android:id="@+id/tvMiddleLine"
+            android:layout_centerInParent="true"
+            android:textColor="@android:color/white"
+            android:background="@color/lyrics_background"
+            android:padding="@dimen/margin_medium"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Next Line"
+            android:id="@+id/tvBottomLine"
+            android:layout_centerHorizontal="true"
+            android:textColor="@android:color/white"
+            android:layout_below="@+id/tvMiddleLine"
+            android:background="@color/lyrics_background"
+            android:padding="@dimen/margin_medium"
+            android:alpha="0.6"/>
+    </RelativeLayout>
+
     <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

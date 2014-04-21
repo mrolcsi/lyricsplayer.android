@@ -16,7 +16,9 @@ import android.widget.TextView;
 import com.un4seen.bass.BASS;
 import hu.mrolcsi.android.filebrowser.BrowserDialog;
 import hu.mrolcsi.android.lyricsplayer.R;
+import hu.mrolcsi.android.lyricsplayer.player.media.Lyrics;
 import hu.mrolcsi.android.lyricsplayer.player.media.Song;
+import hu.mrolcsi.android.lyricsplayer.player.net.LyricsDownloaderTask;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
 import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
 import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
@@ -68,6 +70,9 @@ public class PlayerActivity extends Activity {
     private TextView tvElapsedTime;
     private TextView tvRemainingTime;
     private SeekBar sbProgress;
+    private TextView tvTopLine;
+    private TextView tvMiddleLine;
+    private TextView tvBottomLine;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,13 +101,13 @@ public class PlayerActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        // TODO: implement method
+        //TODO
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        // TODO: implement method
+        //TODO
     }
 
     private void initViews() {
@@ -118,6 +123,10 @@ public class PlayerActivity extends Activity {
         tvElapsedTime = (TextView) findViewById(R.id.tvElapsedTime);
         tvRemainingTime = (TextView) findViewById(R.id.tvRemainingTime);
         sbProgress = (SeekBar) findViewById(R.id.sbProgress);
+
+        tvTopLine = (TextView) findViewById(R.id.tvTopLine);
+        tvMiddleLine = (TextView) findViewById(R.id.tvMiddleLine);
+        tvBottomLine = (TextView) findViewById(R.id.tvBottomLine);
     }
 
     private void initListeners() {
@@ -216,6 +225,39 @@ public class PlayerActivity extends Activity {
 
                 editor.putString(PREF_LASTSONG, path);
                 editor.apply();
+
+                new LyricsDownloaderTask(this) {
+                    @Override
+                    protected void onPreExecute() {
+                        super.onPreExecute();
+
+                        tvTopLine.setText(R.string.player_fetchinglyrics);
+                        tvMiddleLine.setText(R.string.player_pleasewait);
+                    }
+
+                    @Override
+                    protected void onPostExecute(Lyrics lyrics) {
+                        super.onPostExecute(lyrics);
+                        // TODO: implement method
+                        tvTopLine.setText(R.string.player_success);
+                        tvMiddleLine.setText(R.string.player_lyricsdownloaded);
+                        tvBottomLine.setText(R.string.player_enjoy);
+                    }
+
+                    @Override
+                    protected void onProgressUpdate(final String... values) {
+                        super.onProgressUpdate(values);
+                        tvBottomLine.setText(values[0]);
+                    }
+
+                    @Override
+                    protected void onCancelled() {
+                        super.onCancelled();
+                        tvTopLine.setText(R.string.player_failed);
+                        tvMiddleLine.setText(R.string.player_nointernetconnection);
+                        tvBottomLine.setText(R.string.player_connecttointernetfirst);
+                    }
+                }.execute(currentSong.getArtist(), currentSong.getTitle());
             } catch (TagException e) {
                 Log.w(TAG, e);
             } catch (ReadOnlyFileException e) {
