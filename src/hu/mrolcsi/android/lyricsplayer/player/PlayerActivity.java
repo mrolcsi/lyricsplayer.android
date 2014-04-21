@@ -2,6 +2,7 @@ package hu.mrolcsi.android.lyricsplayer.player;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -18,6 +19,7 @@ import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
 import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
 import org.jaudiotagger.tag.TagException;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -82,6 +84,12 @@ public class PlayerActivity extends Activity {
         }
     }
 
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // TODO: implement method
+    }
+
     private void initViews() {
         btnOpen = (ImageButton) findViewById(R.id.btnOpen);
         btnPlayPause = (ImageButton) findViewById(R.id.btnPlayPause);
@@ -103,8 +111,14 @@ public class PlayerActivity extends Activity {
             public void onClick(View view) {
                 BrowserDialog bd = new BrowserDialog();
                 bd.setBrowseMode(BrowserDialog.MODE_OPEN_FILE)
-                        .setExtensionFilter("mp3;wma;ogg;wav")
-                        .setStartPath(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).getAbsolutePath())
+                        .setExtensionFilter("mp3;wma;ogg;wav");
+
+                String startPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).getAbsolutePath();
+                if (sharedPrefs.contains(PREF_LASTSONG)) {
+                    startPath = new File(sharedPrefs.getString(PREF_LASTSONG, null)).getParent();
+                }
+
+                bd.setStartPath(startPath)
                         .setOnDialogResultListener(new BrowserDialog.OnDialogResultListener() {
                             @Override
                             public void onPositiveResult(String path) {
@@ -130,7 +144,7 @@ public class PlayerActivity extends Activity {
                         currentSong.resume();
                         timerHandler.postDelayed(timerRunnable, 0);
 
-                        btnPlayPause.setImageResource(R.drawable.player_play);
+                        btnPlayPause.setImageResource(R.drawable.player_pause);
                     } else if (status == BASS.BASS_ACTIVE_STOPPED) {
                         currentSong.play();
                         timerHandler.postDelayed(timerRunnable, 0);
@@ -141,14 +155,39 @@ public class PlayerActivity extends Activity {
                         currentSong.pause();
                         timerHandler.removeCallbacks(timerRunnable);
 
-                        btnPlayPause.setImageResource(R.drawable.player_pause);
+                        btnPlayPause.setImageResource(R.drawable.player_play);
                     }
                 }
+            }
+        });
+
+        sbProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                //TODO
+                if (b && currentSong != null && currentSong.getStatus() == BASS.BASS_ACTIVE_PLAYING) {
+                    currentSong.seekSeconds(i);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                //TODO:
+                // show little time dialog like in walkman?
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
             }
         });
     }
 
     private void loadSong(String path) {
+        if (currentSong != null) {
+            currentSong.stop();
+            timerHandler.removeCallbacks(timerRunnable);
+            btnPlayPause.setImageResource(R.drawable.player_play);
+        }
         if (path != null) {
             try {
                 currentSong = new Song(path);

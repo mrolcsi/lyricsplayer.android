@@ -11,8 +11,8 @@
         android:layout_height="@dimen/browser_iconSize"
         android:id="@+id/browser_listItemIcon"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="@dimen/browser_margin"
-        android:layout_centerVertical="true"/>
+        android:layout_centerVertical="true"
+        android:layout_margin="@dimen/browser_margin"/>
 
     <TextView
         android:layout_width="fill_parent"

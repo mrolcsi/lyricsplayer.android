@@ -38,6 +38,7 @@ public class Song {
 
     public Song(String path) throws TagException, ReadOnlyFileException, CannotReadException, InvalidAudioFrameException, IOException {
         this.filePath = path;
+        this.stream = BASS_StreamCreateFile(filePath, 0, 0, 0);
         audioFile = AudioFileIO.read(new File(this.filePath));
     }
 
@@ -114,7 +115,8 @@ public class Song {
     }
 
     public Bitmap getCover() throws IOException {
-        return BitmapFactory.decodeFile(audioFile.getTag().getFirst(FieldKey.COVER_ART));
+        final byte[] binaryData = audioFile.getTag().getFirstArtwork().getBinaryData();
+        return BitmapFactory.decodeByteArray(binaryData, 0, binaryData.length);
     }
 
 //endregion

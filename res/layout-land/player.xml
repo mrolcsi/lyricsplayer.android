@@ -10,7 +10,8 @@
         android:id="@+id/imgCover"
         android:scaleType="fitCenter"
         android:layout_alignParentLeft="true"
-        android:layout_above="@+id/tvElapsedTime"/>
+        android:layout_above="@+id/tvElapsedTime"
+        android:src="@drawable/player_nocover"/>
 
     <ImageButton
         android:layout_width="wrap_content"

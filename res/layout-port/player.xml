@@ -27,7 +27,8 @@
         android:gravity="center"
         android:layout_above="@+id/tvArtistAlbum"
         android:layout_margin="@dimen/margin_medium"
-        />
+        android:layout_toRightOf="@+id/btnOpen"
+        android:layout_toLeftOf="@+id/btnDummy"/>
 
     <TextView
         android:layout_width="fill_parent"
@@ -50,6 +51,18 @@
         android:src="@drawable/player_open"
         android:layout_margin="@dimen/margin_medium"
         android:layout_below="@+id/imgCover"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnDummy"
+        android:layout_alignParentLeft="false"
+        android:src="@drawable/player_open"
+        android:layout_margin="@dimen/margin_medium"
+        android:layout_below="@+id/imgCover"
+        android:visibility="invisible"
+        android:clickable="false"
+        android:layout_alignParentRight="true"/>
 
     <ImageButton
         android:layout_width="wrap_content"

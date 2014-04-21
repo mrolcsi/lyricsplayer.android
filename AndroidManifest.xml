@@ -17,7 +17,7 @@
         <activity
             android:name=".player.PlayerActivity"
             android:theme="@style/LyricsPlayer"
-            android:configChanges="orientation">
+            android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
