@@ -9,7 +9,10 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
-import android.widget.*;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import com.un4seen.bass.BASS;
 import hu.mrolcsi.android.filebrowser.BrowserDialog;
 import hu.mrolcsi.android.lyricsplayer.R;
@@ -90,6 +93,18 @@ public class PlayerActivity extends Activity {
         // TODO: implement method
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // TODO: implement method
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // TODO: implement method
+    }
+
     private void initViews() {
         btnOpen = (ImageButton) findViewById(R.id.btnOpen);
         btnPlayPause = (ImageButton) findViewById(R.id.btnPlayPause);
@@ -127,8 +142,6 @@ public class PlayerActivity extends Activity {
 
                             @Override
                             public void onNegativeResult() {
-                                Toast.makeText(PlayerActivity.this, "ERROR: Couldn't open file.", Toast.LENGTH_SHORT).show();
-
                             }
                         });
                 bd.show(getFragmentManager(), BrowserDialog.TAG);
@@ -187,6 +200,7 @@ public class PlayerActivity extends Activity {
             currentSong.stop();
             timerHandler.removeCallbacks(timerRunnable);
             btnPlayPause.setImageResource(R.drawable.player_play);
+            sbProgress.setProgress(0);
         }
         if (path != null) {
             try {
@@ -196,6 +210,9 @@ public class PlayerActivity extends Activity {
                 tvTitle.setText(currentSong.getTitle());
                 tvArtistAlbum.setText(String.format("%s - %s", currentSong.getArtist(), currentSong.getAlbum()));
                 sbProgress.setMax((int) currentSong.getTotalTimeSeconds());
+
+                tvElapsedTime.setText(currentSong.getElapsedTimeString());
+                tvRemainingTime.setText(currentSong.getRemainingTimeString());
 
                 editor.putString(PREF_LASTSONG, path);
                 editor.apply();
