@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_gravity="center">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/browser_currentDirectory"
+        android:id="@+id/browser_labelCurrentDirectory"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:textStyle="bold"
+        android:layout_margin="@dimen/browser_margin"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/browser_pathPlaceholder"
+        android:id="@+id/browser_textViewCurrentDir"
+        android:layout_below="@+id/browser_labelCurrentDirectory"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="@dimen/browser_margin"
+        android:layout_marginBottom="@dimen/browser_margin"/>
+
+
+    <ViewFlipper
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/browser_viewFlipper"
+        android:layout_below="@+id/browser_textViewCurrentDir"
+        android:layout_centerHorizontal="true">
+
+        <ListView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/browser_listView"
+            />
+
+        <GridView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/browser_gridView"
+            android:numColumns="auto_fit"
+            android:stretchMode="columnWidth"
+            android:columnWidth="@dimen/browser_columnWidth"/>
+        <!--http://stackoverflow.com/questions/7545915/gridview-rows-overlapping-how-to-make-row-height-fit-the-tallest-item-->
+    </ViewFlipper>
+
+</RelativeLayout>

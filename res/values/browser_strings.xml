@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="browser_activityName">FileBrowser</string>
+    <string name="browser_pathPlaceholder">Opened file\'s path goes here</string>
+    <string name="browser_currentDirectory">Current directory:</string>
+    <string name="browser_placeholder">ads:DsaDF:FdsADS:F</string>
+    <string name="browser_titleOpenFile">Open File…</string>
+    <string name="browser_titleSaveFile">Save File as…</string>
+    <string name="browser_titleSelectDir">Select Directory…</string>
+    <string name="browser_emptyFolder">This folder is empty.</string>
+    <string name="browser_filenamePlaceholder">Enter filename here…</string>
+    <string name="browser_fileExists_title">File exists</string>
+    <string name="browser_fileExists_message">Overwrite?</string>
+    <string name="browser_menu_newFolder">New folder</string>
+    <string name="browser_menu_sortBy">Sort by…</string>
+    <string name="browser_menu_viewAsList">View as List</string>
+    <string name="browser_menu_viewAsGrid">View as Grid</string>
+    <string name="browser_toast_noParentDir">Can\'t go further up.</string>
+    <string name="browser_error_folderCantBeOpened_title">Can\'t Open Folder</string>
+    <string name="browser_error_folderCantBeOpened_message">This folder is not readable.</string>
+    <string-array name="browser_sortOptions">
+        <item>Name (ascending)</item>
+        <item>Name (descending)</item>
+        <item>Extension (ascending)</item>
+        <item>Extension (descending)</item>
+        <item>Date (ascending)</item>
+        <item>Date (descending)</item>
+        <item>Size (ascending)</item>
+        <item>Size (descending)</item>
+    </string-array>
+    <plurals name="browser_numberOfFiles">
+        <item quantity="one">%d file</item>
+        <item quantity="other">%d files</item>
+    </plurals>
+    <string name="browser_unknown">N/A</string>
+    <string name="browser_newFolderHint">Enter folder name here…</string>
+    <string name="browser_error_cantCreateFolder_title">Couldn\'t Create Folder</string>
+    <string name="browser_error_cantCreateFolder_message">The folder could not be created.</string>
+    <string name="browser_error_invalidFilename_title">Invalid Filename</string>
+    <string name="browser_error_invalidFilename_message">The specified filename is invalid.</string>
+    <string name="browser_error_invalidFolderName_title">Invalid Folder Name</string>
+    <string name="browser_error_invalidFolderName_message">The specified folder name is invalid.</string>
+    <string name="browser_pressAgainToCancel">Press again to cancel.</string>
+    <string name="browser_upFolder">..</string>
+</resources>

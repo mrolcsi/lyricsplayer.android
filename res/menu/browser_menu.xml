@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/browser_menu_newFolder"
+        android:title="@string/browser_menu_newFolder"
+        android:icon="@drawable/browser_new_folder"
+        android:showAsAction="always"
+        />
+    <item
+        android:id="@+id/browser_menu_sortBy"
+        android:icon="@drawable/browser_sort_by"
+        android:title="@string/browser_menu_sortBy"
+        android:showAsAction="always"
+        />
+    <item
+        android:id="@+id/browser_menu_viewAs"
+        android:showAsAction="always"
+        />
+</menu>

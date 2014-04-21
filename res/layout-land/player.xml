@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imgCover"
+        android:scaleType="fitCenter"
+        android:layout_alignParentLeft="true"
+        android:layout_above="@+id/tvElapsedTime"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnOpen"
+        android:layout_alignParentLeft="false"
+        android:src="@drawable/player_open"
+        android:background="@null"
+        android:layout_margin="@dimen/margin_medium"
+        android:layout_toRightOf="@+id/imgCover"
+        android:layout_alignParentTop="true"/>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/imgCover"
+        android:id="@+id/llPlaybackControls"
+        android:layout_above="@+id/sbProgress">
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnPrev"
+            android:layout_margin="@dimen/margin_medium"
+            android:layout_above="@+id/sbProgress"
+            android:layout_toLeftOf="@+id/btnPlayPause"
+            android:src="@drawable/player_prev"
+            android:background="@null"
+            android:layout_weight="1"
+            android:layout_gravity="bottom"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnPlayPause"
+            android:layout_margin="@dimen/margin_medium"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@+id/sbProgress"
+            android:src="@drawable/player_play"
+            android:background="@null"
+            android:layout_weight="1"
+            android:layout_gravity="bottom"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnNext"
+            android:layout_margin="@dimen/margin_medium"
+            android:layout_above="@+id/sbProgress"
+            android:layout_toRightOf="@+id/btnPlayPause"
+            android:src="@drawable/player_next"
+            android:background="@null"
+            android:layout_weight="1"
+            android:layout_gravity="bottom"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_toRightOf="@+id/imgCover"
+        android:layout_alignParentRight="true"
+        android:id="@+id/llMetadata"
+        android:layout_above="@+id/llPlaybackControls">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Title"
+            android:id="@+id/tvTitle"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/imgCover"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Artist - Album"
+            android:id="@+id/tvArtistAlbum"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"/>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="00:00"
+        android:id="@+id/tvElapsedTime"
+        android:layout_alignParentLeft="true"
+        android:layout_above="@+id/sbProgress"
+        android:layout_marginLeft="@dimen/margin_medium"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="-99:99"
+        android:id="@+id/tvRemainingTime"
+        android:layout_marginRight="@dimen/margin_medium"
+        android:layout_above="@+id/sbProgress"
+        android:layout_alignParentRight="true"/>
+
+    <SeekBar
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/sbProgress"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/margin_medium"/>
+
+</RelativeLayout>

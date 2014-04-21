@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="LyricsPlayer" parent="android:Theme.DeviceDefault.Light.NoActionBar">
+        <item name="android:imageButtonStyle">@style/LyricsPlayer.ImageButton</item>
+    </style>
+
+    <style name="LyricsPlayer.ImageButton">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+</resources>

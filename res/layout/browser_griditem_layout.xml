@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="@dimen/browser_margin"
+    >
+
+    <ImageView
+        android:layout_width="@dimen/browser_iconSize"
+        android:layout_height="@dimen/browser_iconSize"
+        android:id="@+id/browser_listItemIcon"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/browser_placeholder"
+        android:id="@+id/browser_listItemText"
+        android:layout_marginTop="@dimen/browser_margin"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal|top"
+        android:maxLines="4"
+        android:ellipsize="marquee"/>
+    <!--http://stackoverflow.com/questions/2160619/android-ellipsize-multiline-textview-->
+</LinearLayout>

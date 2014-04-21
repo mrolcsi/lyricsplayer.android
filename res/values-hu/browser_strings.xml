@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="browser_activityName">Tallózó</string>
+    <string name="browser_pathPlaceholder">Megnyitott fájl elérési útja</string>
+    <string name="browser_currentDirectory">Aktuális mappa:</string>
+    <string name="browser_placeholder">ads:DsaDF:FdsADS:F</string>
+    <string name="browser_titleOpenFile">Fájl megnyitása…</string>
+    <string name="browser_titleSaveFile">Mentés másként…</string>
+    <string name="browser_titleSelectDir">Mappa kiválasztása…</string>
+    <string name="browser_emptyFolder">Ez a mappa üres.</string>
+    <string name="browser_filenamePlaceholder">Fájlnév…</string>
+    <string name="browser_fileExists_title">A fájl létezik</string>
+    <string name="browser_fileExists_message">Felülírja?</string>
+    <string name="browser_menu_newFolder">Új mappa</string>
+    <string name="browser_menu_sortBy">Rendezés…</string>
+    <string name="browser_menu_viewAsList">Lista nézet</string>
+    <string name="browser_menu_viewAsGrid">Négyzetrács nézet</string>
+    <string name="browser_toast_noParentDir">Nem lehet feljebb menni.</string>
+    <string name="browser_error_folderCantBeOpened_title">Mappa nem megnyitható</string>
+    <string name="browser_error_folderCantBeOpened_message">A mappa nem olvasható.</string>
+    <string-array name="browser_sortOptions">
+        <item>Név szerint (növekvő)</item>
+        <item>Név szerint (csökkenő)</item>
+        <item>Kiterjesztés szerint (növekvő)</item>
+        <item>Kiterjesztés szerint (csökkenő)</item>
+        <item>Dátum szerint (növekvő)</item>
+        <item>Dátum szerint (csökkenő)</item>
+        <item>Méret szerint (növekvő)</item>
+        <item>Méret szerint (csökkenő)</item>
+    </string-array>
+    <plurals name="browser_numberOfFiles">
+        <item quantity="other">%d fájl</item>
+    </plurals>
+    <string name="browser_unknown">N/A</string>
+    <string name="browser_newFolderHint">Mappanév…</string>
+    <string name="browser_error_cantCreateFolder_title">Létrehozás sikertelen</string>
+    <string name="browser_error_cantCreateFolder_message">A mappa nem jött létre.</string>
+    <string name="browser_error_invalidFilename_title">Érvénytelen fájlnév</string>
+    <string name="browser_error_invalidFilename_message">A megadott fájlnév nem használható.</string>
+    <string name="browser_error_invalidFolderName_title">Érvénytelen mappanév</string>
+    <string name="browser_error_invalidFolderName_message">A megadott mappanév nem használható.</string>
+    <string name="browser_pressAgainToCancel">Nyomja meg mégegyszer a kilépéshez.</string>
+</resources>

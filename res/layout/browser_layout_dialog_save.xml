@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/browser_currentDirectory"
+        android:id="@+id/browser_labelCurrentDirectory"
+        android:layout_alignParentLeft="true"
+        android:textStyle="bold"
+        android:layout_margin="@dimen/browser_margin"
+        android:layout_alignBottom="@+id/btnNewFolder"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/browser_pathPlaceholder"
+        android:id="@+id/browser_textViewCurrentDir"
+        android:layout_below="@+id/browser_labelCurrentDirectory"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="@dimen/browser_margin"
+        android:layout_marginBottom="@dimen/browser_margin"/>
+
+
+    <EditText
+        style="@android:style/TextAppearance.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/browser_editTextFileName"
+        android:inputType="textNoSuggestions"
+        android:layout_toLeftOf="@+id/browser_imageButtonSave"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="@dimen/browser_margin"
+        android:layout_marginBottom="@dimen/browser_margin"
+        android:layout_marginTop="@dimen/browser_margin"
+        android:singleLine="true"
+        android:hint="@string/browser_filenamePlaceholder"
+        android:selectAllOnFocus="true"
+        android:layout_alignParentBottom="false"
+        android:layout_below="@+id/browser_textViewCurrentDir"/>
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/browser_imageButtonSave"
+        android:src="@drawable/browser_save"
+        android:scaleType="fitCenter"
+        android:contentDescription="@android:string/ok"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/browser_margin"
+        android:layout_alignParentBottom="false"
+        android:layout_below="@+id/browser_textViewCurrentDir"/>
+
+    <ImageButton
+        android:layout_width="@dimen/browser_toolbarIconSize"
+        android:layout_height="@dimen/browser_toolbarIconSize"
+        android:id="@+id/btnLayout"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:src="@drawable/browser_view_as_grid"
+        android:background="@android:color/transparent"
+        android:layout_margin="@dimen/browser_margin"
+        android:scaleType="fitCenter"/>
+
+    <ImageButton
+        android:layout_width="@dimen/browser_toolbarIconSize"
+        android:layout_height="@dimen/browser_toolbarIconSize"
+        android:id="@+id/btnNewFolder"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/btnSort"
+        android:background="@android:color/transparent"
+        android:src="@drawable/browser_new_folder"
+        android:layout_margin="@dimen/browser_margin"
+        android:scaleType="fitCenter"/>
+
+    <ImageButton
+        android:layout_width="@dimen/browser_toolbarIconSize"
+        android:layout_height="@dimen/browser_toolbarIconSize"
+        android:id="@+id/btnSort"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/btnLayout"
+        android:background="@android:color/transparent"
+        android:src="@drawable/browser_sort_by"
+        android:layout_margin="@dimen/browser_margin"
+        android:scaleType="fitCenter"/>
+
+    <ViewFlipper
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/browser_viewFlipper"
+        android:layout_below="@+id/browser_editTextFileName">
+
+        <ListView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/browser_listView"
+            />
+
+        <GridView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:id="@+id/browser_gridView"
+            android:numColumns="auto_fit"
+            android:stretchMode="columnWidth"
+            android:columnWidth="@dimen/browser_columnWidth"/>
+        <!--http://stackoverflow.com/questions/7545915/gridview-rows-overlapping-how-to-make-row-height-fit-the-tallest-item-->
+    </ViewFlipper>
+
+</RelativeLayout>
