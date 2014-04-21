@@ -1,2 +1,1 @@
-lyricsplayer.android
-====================
+Nothing to see here. Go away!
