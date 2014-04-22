@@ -1,5 +1,7 @@
 package hu.mrolcsi.android.lyricsplayer.player.media;
 
+import android.util.Log;
+
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,7 +21,12 @@ public class Lyrics {
     public Lyrics(String lrc) {
         //separate lines
         String[] split = lrc.replace("[", "\n[").split("\n");
-        split = Arrays.copyOfRange(split, 1, split.length - 1);
+        try {
+            split = Arrays.copyOfRange(split, 1, split.length - 1);
+        } catch (Exception e) {
+            Log.w("LyricsPlayer.Lyrics", e);
+            //FIXME
+        }
 
         //get lines with valid tag
         List<String> lrcLines = new ArrayList<String>();

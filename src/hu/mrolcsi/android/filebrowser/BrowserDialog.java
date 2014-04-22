@@ -735,6 +735,16 @@ public class BrowserDialog extends DialogFragment {
         this.startIsRoot = startIsRoot;
         return this;
     }
+
+    public String getCurrentPath() {
+        return currentPath;
+    }
+
+    @SuppressWarnings("UnusedDeclaration")
+    public BrowserDialog setCurrentPath(String currentPath) {
+        this.currentPath = currentPath;
+        return this;
+    }
     //</editor-fold>
 
     public interface OnDialogResultListener {

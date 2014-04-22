@@ -32,7 +32,8 @@
             android:layout_above="@+id/tvMiddleLine"
             android:background="@color/lyrics_background"
             android:padding="@dimen/margin_medium"
-            android:alpha="0.6"/>
+            android:alpha="0.6"
+            android:gravity="center_horizontal"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -43,7 +44,8 @@
             android:layout_centerInParent="true"
             android:textColor="@android:color/white"
             android:background="@color/lyrics_background"
-            android:padding="@dimen/margin_medium"/>
+            android:padding="@dimen/margin_medium"
+            android:gravity="center_horizontal"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -56,7 +58,8 @@
             android:layout_below="@+id/tvMiddleLine"
             android:background="@color/lyrics_background"
             android:padding="@dimen/margin_medium"
-            android:alpha="0.6"/>
+            android:alpha="0.6"
+            android:gravity="center_horizontal"/>
     </RelativeLayout>
 
     <TextView

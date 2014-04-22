@@ -172,21 +172,23 @@ public class PlayerActivity extends Activity {
                         .setExtensionFilter("mp3;wma;ogg;wav");
 
                 String startPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).getAbsolutePath();
+                bd.setStartPath(startPath);
                 if (sharedPrefs.contains(PREF_LASTSONG)) {
-                    startPath = new File(sharedPrefs.getString(PREF_LASTSONG, null)).getParent();
+                    bd.setCurrentPath(new File(sharedPrefs.getString(PREF_LASTSONG, null)).getParent());
                 }
 
-                bd.setStartPath(startPath)
-                        .setOnDialogResultListener(new BrowserDialog.OnDialogResultListener() {
-                            @Override
-                            public void onPositiveResult(String path) {
-                                loadSong(path);
-                            }
 
-                            @Override
-                            public void onNegativeResult() {
-                            }
-                        });
+                bd.setStartPath(startPath);
+                bd.setOnDialogResultListener(new BrowserDialog.OnDialogResultListener() {
+                    @Override
+                    public void onPositiveResult(String path) {
+                        loadSong(path);
+                    }
+
+                    @Override
+                    public void onNegativeResult() {
+                    }
+                });
                 bd.show(getFragmentManager(), BrowserDialog.TAG);
             }
         });
