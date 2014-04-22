@@ -9,4 +9,5 @@
     <string name="player_failed">Failed.</string>
     <string name="player_nointernetconnection">No Internet connection.</string>
     <string name="player_connecttointernetfirst">Connect to Internet first!</string>
+    <string name="player_loadinglyrics">Loading lyrics...</string>
 </resources>

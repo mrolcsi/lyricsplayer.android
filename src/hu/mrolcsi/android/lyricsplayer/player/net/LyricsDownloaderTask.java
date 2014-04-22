@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.text.Html;
 import android.util.Log;
+import hu.mrolcsi.android.lyricsplayer.R;
 import hu.mrolcsi.android.lyricsplayer.player.media.Lyrics;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -40,7 +41,6 @@ public class LyricsDownloaderTask extends AsyncTask<String, String, Lyrics> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        // TODO: implement method
     }
 
     @Override
@@ -98,8 +98,8 @@ public class LyricsDownloaderTask extends AsyncTask<String, String, Lyrics> {
 
                             String lrc = Html.fromHtml(result).toString();
 
-                            Lyrics l = new Lyrics(lrc);
-                            return l;
+                            publishProgress(context.getString(R.string.player_loadinglyrics));
+                            return new Lyrics(lrc);
                         }
                         break;
                     default:

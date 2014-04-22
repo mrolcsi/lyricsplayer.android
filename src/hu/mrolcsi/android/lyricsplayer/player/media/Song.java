@@ -2,6 +2,7 @@ package hu.mrolcsi.android.lyricsplayer.player.media;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
@@ -31,14 +32,24 @@ public class Song {
     private AudioFile audioFile;
 
     private int stream;
-    private SYNCPROC syncProc;
+    private SYNCPROC onSongEnd = new SYNCPROC() {
+        @Override
+        public void SYNCPROC(int handle, int channel, int data, Object user) {
+            BASS_ChannelStop(handle);
+            BASS_ChannelSetPosition(handle, 0, BASS_POS_BYTE);
+        }
+    };
+
+    private Lyrics lyrics;
+    private OnLyricsReached onLyricsReached;
 
 
     //region Constructor
 
-    public Song(String path) throws TagException, ReadOnlyFileException, CannotReadException, InvalidAudioFrameException, IOException {
+    public Song(String path, SYNCPROC onSongEnd) throws TagException, ReadOnlyFileException, CannotReadException, InvalidAudioFrameException, IOException {
         this.filePath = path;
         this.stream = BASS_StreamCreateFile(filePath, 0, 0, 0);
+        this.onSongEnd = onSongEnd;
         audioFile = AudioFileIO.read(new File(this.filePath));
     }
 
@@ -131,7 +142,20 @@ public class Song {
     public void play() {
         stop();
         this.stream = BASS_StreamCreateFile(filePath, 0, 0, 0);
-        //BASS_ChannelSetSync(stream, BASS_SYNC_END, 0, syncProc, this);
+        BASS_ChannelSetSync(stream, BASS_SYNC_END, 0, onSongEnd, this);
+        for (LyricLine line : lyrics.getAllLyrics()) {
+            final long bytes = BASS_ChannelSeconds2Bytes(this.stream, line.time);
+            SYNCPROC callback = new SYNCPROC() {
+                @Override
+                public void SYNCPROC(int handle, int channel, int data, Object user) {
+                    Log.d("LyricsPlayer.Song", (String) user);
+                    onLyricsReached.onLyricsReached((String) user, "", "");
+                }
+            };
+
+            final int syncHandle = BASS_ChannelSetSync(this.stream, BASS_SYNC_POS | BASS_SYNC_MIXTIME, bytes, callback, line.lyric);
+            if (syncHandle == 0) Log.e("LyricsPlayer.Lyrics", "BASS Error code = " + BASS_ErrorGetCode());
+        }
         BASS_ChannelPlay(stream, true);
     }
 
@@ -143,19 +167,31 @@ public class Song {
         BASS_ChannelPlay(stream, false);
     }
 
-    public void setVolume(float volume) {
-        //min=0; max=1
-        BASS_ChannelSetAttribute(stream, BASS_ATTRIB_VOL, volume);
-    }
-
     public void seekSeconds(double seconds) {
         final long bytes = BASS_ChannelSeconds2Bytes(this.stream, seconds);
         BASS_ChannelSetPosition(stream, bytes, BASS_POS_BYTE);
     }
 
-    public void SeekBytes(long bytes) {
+    public void seekBytes(long bytes) {
         BASS_ChannelSetPosition(this.stream, bytes, BASS_POS_BYTE);
+    }
+
+    public void setLyrics(Lyrics lyrics, OnLyricsReached onLyricsReached) {
+        if (onLyricsReached == null) {
+            onLyricsReached = new OnLyricsReached() {
+                @Override
+                public void onLyricsReached(String currentLine, String previousLine, String nextLine) {
+                    // do nothing
+                }
+            };
+        }
+        if (this.onLyricsReached == null) {
+            this.onLyricsReached = onLyricsReached;
+        }
+
+        this.lyrics = lyrics;
     }
 
     //endregion
 }
+

@@ -17,6 +17,7 @@ import com.un4seen.bass.BASS;
 import hu.mrolcsi.android.filebrowser.BrowserDialog;
 import hu.mrolcsi.android.lyricsplayer.R;
 import hu.mrolcsi.android.lyricsplayer.player.media.Lyrics;
+import hu.mrolcsi.android.lyricsplayer.player.media.OnLyricsReached;
 import hu.mrolcsi.android.lyricsplayer.player.media.Song;
 import hu.mrolcsi.android.lyricsplayer.player.net.LyricsDownloaderTask;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
@@ -38,6 +39,7 @@ public class PlayerActivity extends Activity {
 
     private static final String TAG = "LyricsPlayer.Player";
     private static final String PREF_LASTSONG = "LyricsPlayer.lastSong";
+
     Handler timerHandler = new Handler();
     Runnable timerRunnable = new Runnable() {
         //To start handler, call:
@@ -57,6 +59,20 @@ public class PlayerActivity extends Activity {
             timerHandler.postDelayed(this, 500);
         }
     };
+
+    private BASS.SYNCPROC onSongEnd = new BASS.SYNCPROC() {
+        @Override
+        public void SYNCPROC(int handle, int channel, int data, Object user) {
+            BASS.BASS_ChannelStop(channel);
+            timerHandler.removeCallbacks(timerRunnable);
+
+            btnPlayPause.setImageResource(R.drawable.player_play);
+            sbProgress.setProgress(0);
+            tvElapsedTime.setText(currentSong.getElapsedTimeString());
+            tvRemainingTime.setText(currentSong.getRemainingTimeString());
+        }
+    };
+
     private Song currentSong;
     private SharedPreferences sharedPrefs;
     private SharedPreferences.Editor editor;
@@ -211,64 +227,79 @@ public class PlayerActivity extends Activity {
             btnPlayPause.setImageResource(R.drawable.player_play);
             sbProgress.setProgress(0);
         }
-        if (path != null) {
-            try {
-                currentSong = new Song(path);
+        if (path != null) try {
+            currentSong = new Song(path, onSongEnd);
 
-                imgCover.setImageBitmap(currentSong.getCover());
-                tvTitle.setText(currentSong.getTitle());
-                tvArtistAlbum.setText(String.format("%s - %s", currentSong.getArtist(), currentSong.getAlbum()));
-                sbProgress.setMax((int) currentSong.getTotalTimeSeconds());
+            imgCover.setImageBitmap(currentSong.getCover());
+            tvTitle.setText(currentSong.getTitle());
+            tvArtistAlbum.setText(String.format("%s - %s", currentSong.getArtist(), currentSong.getAlbum()));
+            sbProgress.setMax((int) currentSong.getTotalTimeSeconds());
 
-                tvElapsedTime.setText(currentSong.getElapsedTimeString());
-                tvRemainingTime.setText(currentSong.getRemainingTimeString());
+            tvElapsedTime.setText(currentSong.getElapsedTimeString());
+            tvRemainingTime.setText(currentSong.getRemainingTimeString());
 
-                editor.putString(PREF_LASTSONG, path);
-                editor.apply();
+            editor.putString(PREF_LASTSONG, path);
+            editor.apply();
 
-                new LyricsDownloaderTask(this) {
-                    @Override
-                    protected void onPreExecute() {
-                        super.onPreExecute();
+            new LyricsDownloaderTask(this) {
+                @Override
+                protected void onPreExecute() {
+                    super.onPreExecute();
 
-                        tvTopLine.setText(R.string.player_fetchinglyrics);
-                        tvMiddleLine.setText(R.string.player_pleasewait);
-                    }
+                    tvTopLine.setText(R.string.player_pleasewait);
+                    tvMiddleLine.setText(R.string.player_fetchinglyrics);
+                }
 
-                    @Override
-                    protected void onPostExecute(Lyrics lyrics) {
-                        super.onPostExecute(lyrics);
-                        // TODO: implement method
-                        tvTopLine.setText(R.string.player_success);
-                        tvMiddleLine.setText(R.string.player_lyricsdownloaded);
-                        tvBottomLine.setText(R.string.player_enjoy);
-                    }
+                @Override
+                protected void onPostExecute(final Lyrics lyrics) {
+                    super.onPostExecute(lyrics);
 
-                    @Override
-                    protected void onProgressUpdate(final String... values) {
-                        super.onProgressUpdate(values);
-                        tvBottomLine.setText(values[0]);
-                    }
+                    tvTopLine.setText(R.string.player_success);
+                    tvMiddleLine.setText(R.string.player_lyricsdownloaded);
+                    tvBottomLine.setText(R.string.player_enjoy);
 
-                    @Override
-                    protected void onCancelled() {
-                        super.onCancelled();
-                        tvTopLine.setText(R.string.player_failed);
-                        tvMiddleLine.setText(R.string.player_nointernetconnection);
-                        tvBottomLine.setText(R.string.player_connecttointernetfirst);
-                    }
-                }.execute(currentSong.getArtist(), currentSong.getTitle());
-            } catch (TagException e) {
-                Log.w(TAG, e);
-            } catch (ReadOnlyFileException e) {
-                Log.w(TAG, e);
-            } catch (CannotReadException e) {
-                Log.w(TAG, e);
-            } catch (InvalidAudioFrameException e) {
-                Log.w(TAG, e);
-            } catch (IOException e) {
-                Log.w(TAG, e);
-            }
+                    OnLyricsReached onLyricsReached = new OnLyricsReached() {
+                        @Override
+                        public void onLyricsReached(final String currentLine, final String previousLine, final String nextLine) {
+                            Log.i(TAG, currentLine);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    tvTopLine.setText(previousLine);
+                                    tvMiddleLine.setText(currentLine);
+                                    tvBottomLine.setText(nextLine);
+                                }
+                            });
+
+                        }
+                    };
+                    currentSong.setLyrics(lyrics, onLyricsReached);
+                }
+
+                @Override
+                protected void onProgressUpdate(final String... values) {
+                    super.onProgressUpdate(values);
+                    tvBottomLine.setText(values[0]);
+                }
+
+                @Override
+                protected void onCancelled() {
+                    super.onCancelled();
+                    tvTopLine.setText(R.string.player_failed);
+                    tvMiddleLine.setText(R.string.player_nointernetconnection);
+                    tvBottomLine.setText(R.string.player_connecttointernetfirst);
+                }
+            }.execute(currentSong.getArtist(), currentSong.getTitle());
+        } catch (TagException e) {
+            Log.w(TAG, e);
+        } catch (ReadOnlyFileException e) {
+            Log.w(TAG, e);
+        } catch (CannotReadException e) {
+            Log.w(TAG, e);
+        } catch (InvalidAudioFrameException e) {
+            Log.w(TAG, e);
+        } catch (IOException e) {
+            Log.w(TAG, e);
         }
     }
 }
