@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="browser_margin">3dp</dimen>
+    <dimen name="browser_iconSize">32dp</dimen>
+    <dimen name="browser_columnWidth">75dp</dimen>
+    <dimen name="browser_toolbarIconSize">24dp</dimen>
+</resources>

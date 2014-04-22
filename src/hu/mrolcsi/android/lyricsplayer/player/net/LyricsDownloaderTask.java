@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.text.Html;
 import android.util.Log;
 import hu.mrolcsi.android.lyricsplayer.player.media.Lyrics;
 import org.apache.http.HttpEntity;
@@ -95,8 +96,9 @@ public class LyricsDownloaderTask extends AsyncTask<String, String, Lyrics> {
                             // now you have the string representation of the HTML request
                             inStream.close();
 
-                            Lyrics l = new Lyrics();
-                            l.setRawLRC(result);
+                            String lrc = Html.fromHtml(result).toString();
+
+                            Lyrics l = new Lyrics(lrc);
                             return l;
                         }
                         break;
