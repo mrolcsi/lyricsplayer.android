@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <dimen name="browser_margin">8dp</dimen>
-    <dimen name="browser_iconSize">96dp</dimen>
-    <dimen name="browser_columnWidth">200dp</dimen>
-    <dimen name="browser_toolbarIconSize">64dp</dimen>
-</resources>
