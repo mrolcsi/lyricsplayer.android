@@ -126,6 +126,24 @@ public class PlayerActivity extends Activity {
         //TODO
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        currentSong.stop();
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        // TODO: implement method
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        // TODO: implement method
+    }
+
     private void initViews() {
         btnOpen = (ImageButton) findViewById(R.id.btnOpen);
         btnPlayPause = (ImageButton) findViewById(R.id.btnPlayPause);
@@ -202,7 +220,6 @@ public class PlayerActivity extends Activity {
         sbProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                //TODO
                 if (b && currentSong != null && currentSong.getStatus() == BASS.BASS_ACTIVE_PLAYING) {
                     currentSong.seekSeconds(i);
                 }
@@ -210,7 +227,6 @@ public class PlayerActivity extends Activity {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                //TODO:
                 // show little time dialog like in walkman?
             }
 
@@ -261,7 +277,6 @@ public class PlayerActivity extends Activity {
                     OnLyricsReached onLyricsReached = new OnLyricsReached() {
                         @Override
                         public void onLyricsReached(final String currentLine, final String previousLine, final String nextLine) {
-                            Log.i(TAG, currentLine);
                             runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {

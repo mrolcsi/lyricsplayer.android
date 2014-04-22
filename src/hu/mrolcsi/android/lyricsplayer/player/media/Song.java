@@ -14,6 +14,7 @@ import org.jaudiotagger.tag.TagException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import static com.un4seen.bass.BASS.*;
 
@@ -42,7 +43,6 @@ public class Song {
 
     private Lyrics lyrics;
     private OnLyricsReached onLyricsReached;
-
 
     //region Constructor
 
@@ -143,17 +143,19 @@ public class Song {
         stop();
         this.stream = BASS_StreamCreateFile(filePath, 0, 0, 0);
         BASS_ChannelSetSync(stream, BASS_SYNC_END, 0, onSongEnd, this);
-        for (LyricLine line : lyrics.getAllLyrics()) {
-            final long bytes = BASS_ChannelSeconds2Bytes(this.stream, line.time);
+        final List<LyricLine> allLyrics = lyrics.getAllLyrics();
+        for (int i = 0; i < allLyrics.size(); i++) {
+            final long bytes = BASS_ChannelSeconds2Bytes(this.stream, allLyrics.get(i).time);
+
+            final int currentLine = i;
             SYNCPROC callback = new SYNCPROC() {
                 @Override
                 public void SYNCPROC(int handle, int channel, int data, Object user) {
-                    Log.d("LyricsPlayer.Song", (String) user);
-                    onLyricsReached.onLyricsReached((String) user, "", "");
+                    onLyricsReached.onLyricsReached(allLyrics.get(currentLine).lyric, currentLine - 1 >= 0 ? allLyrics.get(currentLine - 1).lyric : "", currentLine + 1 < allLyrics.size() ? allLyrics.get(currentLine + 1).lyric : "");
                 }
             };
 
-            final int syncHandle = BASS_ChannelSetSync(this.stream, BASS_SYNC_POS | BASS_SYNC_MIXTIME, bytes, callback, line.lyric);
+            final int syncHandle = BASS_ChannelSetSync(this.stream, BASS_SYNC_MIXTIME, bytes, callback, null);
             if (syncHandle == 0) Log.e("LyricsPlayer.Lyrics", "BASS Error code = " + BASS_ErrorGetCode());
         }
         BASS_ChannelPlay(stream, true);
