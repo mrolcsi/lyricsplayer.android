@@ -66,10 +66,14 @@ public class PlayerActivity extends Activity {
             BASS.BASS_ChannelStop(channel);
             timerHandler.removeCallbacks(timerRunnable);
 
-            btnPlayPause.setImageResource(R.drawable.player_play);
-            sbProgress.setProgress(0);
-            tvElapsedTime.setText(currentSong.getElapsedTimeString());
-            tvRemainingTime.setText(currentSong.getRemainingTimeString());
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    btnPlayPause.setImageResource(R.drawable.player_play);
+                    sbProgress.setProgress(0);
+                    tvElapsedTime.setText(currentSong.getElapsedTimeString());
+                    tvRemainingTime.setText(currentSong.getRemainingTimeString());
+                }
+            });
         }
     };
 
@@ -96,7 +100,7 @@ public class PlayerActivity extends Activity {
         //first of all: init BASS
         BASS.BASS_Init(1, 44100, 0);
 
-        setContentView(R.layout.player);
+        setContentView(R.layout.player_main);
         sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         editor = sharedPrefs.edit();
 
@@ -296,15 +300,9 @@ public class PlayerActivity extends Activity {
                 @Override
                 protected void onProgressUpdate(final String... values) {
                     super.onProgressUpdate(values);
-                    tvBottomLine.setText(values[0]);
-                }
-
-                @Override
-                protected void onCancelled() {
-                    super.onCancelled();
-                    tvTopLine.setText(R.string.player_failed);
-                    tvMiddleLine.setText(R.string.player_nointernetconnection);
-                    tvBottomLine.setText(R.string.player_connecttointernetfirst);
+                    if (values[0] != null) tvTopLine.setText(values[0]);
+                    if (values[1] != null) tvMiddleLine.setText(values[1]);
+                    if (values[2] != null) tvBottomLine.setText(values[2]);
                 }
             }.execute(currentSong.getArtist(), currentSong.getTitle());
         } catch (TagException e) {

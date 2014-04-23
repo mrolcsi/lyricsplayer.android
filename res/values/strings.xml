@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Lyrics Player</string>
-    <string name="player_fetchinglyrics">Fetching lyrics…</string>
+    <string name="player_fetchinglyrics">Fetching lyrics.</string>
     <string name="player_pleasewait">Please wait.</string>
     <string name="player_success">Success.</string>
     <string name="player_lyricsdownloaded">Lyrics downloaded.</string>
@@ -9,5 +9,5 @@
     <string name="player_failed">Failed.</string>
     <string name="player_nointernetconnection">No Internet connection.</string>
     <string name="player_connecttointernetfirst">Connect to Internet first!</string>
-    <string name="player_loadinglyrics">Loading lyrics...</string>
+    <string name="player_downloadinglyrics">Downloading lyrics…</string>
 </resources>

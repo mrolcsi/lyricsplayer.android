@@ -89,7 +89,6 @@ public class LyricsDownloaderTask extends AsyncTask<String, String, Lyrics> {
                         // to worry about connection release
 
                         if (entity != null) {
-
                             // A Simple JSON Response Read
                             InputStream inStream = entity.getContent();
                             String result = convertStreamToString(inStream);
@@ -98,10 +97,16 @@ public class LyricsDownloaderTask extends AsyncTask<String, String, Lyrics> {
 
                             String lrc = Html.fromHtml(result).toString();
 
-                            publishProgress(context.getString(R.string.player_loadinglyrics));
+                            //TODO: cache file on sdcard
+
+                            publishProgress(null, null, context.getString(R.string.player_downloadinglyrics));
                             return new Lyrics(lrc);
                         }
                         break;
+                    case 404:
+                        //no lyrics
+                        publishProgress("Error", null, "No lyrics found.");
+                        cancel(true);
                     default:
                         break;
                 }
@@ -131,24 +136,14 @@ public class LyricsDownloaderTask extends AsyncTask<String, String, Lyrics> {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();
 
-        int i = 0;
+        String progress = "";
         String line;
         try {
             while ((line = reader.readLine()) != null) {
                 sb.append(line).append("\n");
 
-                switch (i % 3) {
-                    case 0:
-                        publishProgress(".");
-                        break;
-                    case 1:
-                        publishProgress("..");
-                        break;
-                    case 2:
-                        publishProgress("...");
-                        break;
-                }
-                i++;
+                progress += ".";
+                publishProgress(null, null, progress);
             }
         } catch (IOException e) {
             e.printStackTrace();

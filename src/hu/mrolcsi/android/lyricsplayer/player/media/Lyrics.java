@@ -1,7 +1,5 @@
 package hu.mrolcsi.android.lyricsplayer.player.media;
 
-import android.util.Log;
-
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,38 +14,36 @@ import java.util.regex.Pattern;
 public class Lyrics {
 
     private static final String LRC_LINE_REGEXP = "\\[[0-9]{2}:[0-9]{2}\\.[0-9]{2}].*";
+    private final ArrayList<String> lrcLines;
     private List<LyricLine> lyrics;
+    private double offset;
 
     public Lyrics(String lrc) {
         //separate lines
         String[] split = lrc.replace("[", "\n[").split("\n");
-        try {
-            split = Arrays.copyOfRange(split, 1, split.length - 1);
-        } catch (Exception e) {
-            Log.w("LyricsPlayer.Lyrics", e);
-            //FIXME
-        }
+        split = Arrays.copyOfRange(split, 1, split.length - 1);
+
+        //get offset tag if present
+        Pattern offsetPattern = Pattern.compile("\\[offset: ([-0-9]+)].*");
 
         //get lines with valid tag
-        List<String> lrcLines = new ArrayList<String>();
+        lrcLines = new ArrayList<String>();
         Pattern linePattern = Pattern.compile(LRC_LINE_REGEXP);
         for (String line : split) {
+            Matcher timeMatcher = linePattern.matcher(line);
 
-            Matcher matcher = linePattern.matcher(line);
-
-            if (matcher.matches()) {
+            if (timeMatcher.matches()) {
                 lrcLines.add(line);
+            }
+
+            Matcher offsetMatcher = offsetPattern.matcher(line);
+            if (offsetMatcher.matches()) {
+                //get offset (ms)
+                offset = Double.parseDouble(offsetMatcher.group(1)) / 1000d;
             }
         }
 
-        lyrics = new ArrayList<LyricLine>();
-        for (String line : lrcLines) {
-            final double secondsFromTag = getSecondsFromTag(line.substring(0, 10));
-            final String lyric = line.substring(10);
-
-            lyrics.add(new LyricLine(secondsFromTag, lyric));
-        }
-        Collections.sort(lyrics, LyricLine.COMPARATOR);
+        buildLyrics();
     }
 
     private static double getSecondsFromTag(String tag) {
@@ -57,6 +53,17 @@ public class Lyrics {
         seconds += Integer.parseInt(tag.substring(4, 6));
         seconds += Integer.parseInt(tag.substring(7, 9)) / 100d;
         return seconds;
+    }
+
+    private void buildLyrics() {
+        lyrics = new ArrayList<LyricLine>();
+        for (String line : lrcLines) {
+            final double secondsFromTag = getSecondsFromTag(line.substring(0, 10));
+            final String lyric = line.substring(10);
+
+            lyrics.add(new LyricLine(secondsFromTag /*- offset*/, lyric));  //ignore offset for now...
+        }
+        Collections.sort(lyrics, LyricLine.COMPARATOR);
     }
 
     public List<LyricLine> getAllLyrics() {
@@ -96,6 +103,7 @@ class LyricLine {
             return (int) (lyricLine.time - lyricLine2.time);
         }
     };
+
     double time;
     String lyric;
 

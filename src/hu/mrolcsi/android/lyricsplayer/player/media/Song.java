@@ -143,22 +143,30 @@ public class Song {
         stop();
         this.stream = BASS_StreamCreateFile(filePath, 0, 0, 0);
         BASS_ChannelSetSync(stream, BASS_SYNC_END, 0, onSongEnd, this);
-        final List<LyricLine> allLyrics = lyrics.getAllLyrics();
-        for (int i = 0; i < allLyrics.size(); i++) {
-            final long bytes = BASS_ChannelSeconds2Bytes(this.stream, allLyrics.get(i).time);
 
-            final int currentLine = i;
-            SYNCPROC callback = new SYNCPROC() {
-                @Override
-                public void SYNCPROC(int handle, int channel, int data, Object user) {
-                    onLyricsReached.onLyricsReached(allLyrics.get(currentLine).lyric, currentLine - 1 >= 0 ? allLyrics.get(currentLine - 1).lyric : "", currentLine + 1 < allLyrics.size() ? allLyrics.get(currentLine + 1).lyric : "");
-                }
-            };
+        buildLyricsCallbacks();
 
-            @SuppressWarnings("PointlessBitwiseExpression") final int syncHandle = BASS_ChannelSetSync(this.stream, BASS_SYNC_POS | BASS_SYNC_ONETIME, bytes, callback, null);
-            if (syncHandle == 0) Log.e("LyricsPlayer.Lyrics", "BASS Error code = " + BASS_ErrorGetCode());
-        }
         BASS_ChannelPlay(stream, true);
+    }
+
+    public void buildLyricsCallbacks() {
+        if (lyrics != null) {
+            final List<LyricLine> allLyrics = lyrics.getAllLyrics();
+            for (int i = 0; i < allLyrics.size(); i++) {
+                final long bytes = BASS_ChannelSeconds2Bytes(this.stream, allLyrics.get(i).time);
+
+                final int currentLine = i;
+                SYNCPROC callback = new SYNCPROC() {
+                    @Override
+                    public void SYNCPROC(int handle, int channel, int data, Object user) {
+                        onLyricsReached.onLyricsReached(allLyrics.get(currentLine).lyric, currentLine - 1 >= 0 ? allLyrics.get(currentLine - 1).lyric : "", currentLine + 1 < allLyrics.size() ? allLyrics.get(currentLine + 1).lyric : "");
+                    }
+                };
+
+                @SuppressWarnings("PointlessBitwiseExpression") final int syncHandle = BASS_ChannelSetSync(this.stream, BASS_SYNC_POS | BASS_SYNC_ONETIME, bytes, callback, null);
+                if (syncHandle == 0) Log.e("LyricsPlayer.Lyrics", "BASS Error code = " + BASS_ErrorGetCode());
+            }
+        }
     }
 
     public void pause() {
@@ -178,6 +186,8 @@ public class Song {
         BASS_ChannelSetPosition(this.stream, bytes, BASS_POS_BYTE);
     }
 
+    //endregion
+
     public void setLyrics(Lyrics lyrics, OnLyricsReached onLyricsReached) {
         if (onLyricsReached == null) {
             onLyricsReached = new OnLyricsReached() {
@@ -194,6 +204,10 @@ public class Song {
         this.lyrics = lyrics;
     }
 
-    //endregion
+    public Lyrics getLyrics() {
+        return lyrics;
+    }
+
+
 }
 

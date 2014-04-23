@@ -31,5 +31,8 @@
             android:name="hu.mrolcsi.android.filebrowser.BrowserActivity"
             android:theme="@style/LyricsPlayer">
         </activity>
+        <activity
+            android:name=".player.editor.EditorActivity"
+            android:label="LRC Editor"/>
     </application>
 </manifest>
