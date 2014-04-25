@@ -63,15 +63,15 @@ public class EditorActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.editor_main);
 
+        initViews();
+        initListeners();
+
         //get song to edit
         String path = null;
         if (getIntent().hasExtra("currentSong")) {
             path = getIntent().getStringExtra("currentSong");
             loadSong(path);
         }
-
-        initViews();
-        initListeners();
     }
 
     private void initViews() {
@@ -80,8 +80,6 @@ public class EditorActivity extends Activity {
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         sbProgress = (SeekBar) findViewById(R.id.sbProgress);
         tvTime = (TextView) findViewById(R.id.tvTime);
-
-
     }
 
     private void initListeners() {
@@ -91,7 +89,7 @@ public class EditorActivity extends Activity {
                 if (currentSong != null) {
                     final int status = currentSong.getStatus();
                     if (status == BASS.BASS_ACTIVE_PAUSED) {
-                        currentSong.resume();
+                        currentSong.resume(sbProgress.getProgress());
                         timerHandler.postDelayed(timerRunnable, 0);
 
                         btnPlayPause.setImageResource(R.drawable.player_pause);
@@ -108,6 +106,27 @@ public class EditorActivity extends Activity {
                         btnPlayPause.setImageResource(R.drawable.player_play);
                     }
                 }
+            }
+        });
+
+        sbProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                if (b && currentSong != null && currentSong.getStatus() == BASS.BASS_ACTIVE_PLAYING) {
+                    currentSong.seekSeconds(i);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // TODO
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // TODO
+
             }
         });
     }

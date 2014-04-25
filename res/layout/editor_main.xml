@@ -23,14 +23,21 @@
             android:layout_alignParentLeft="true"
             android:layout_margin="@dimen/margin_small"/>
 
-        <TextView
+        <HorizontalScrollView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/editor_title_format"
-            android:id="@+id/tvTitle"
             android:layout_above="@+id/sbProgress"
             android:layout_toRightOf="@+id/btnPlayPause"
-            android:layout_margin="@dimen/margin_small"/>
+            android:layout_margin="@dimen/margin_small"
+            android:layout_toLeftOf="@+id/tvTime">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/editor_title_format"
+                android:id="@+id/tvTitle"/>
+
+        </HorizontalScrollView>
 
         <SeekBar
             android:layout_width="wrap_content"
@@ -48,6 +55,7 @@
             android:id="@+id/tvTime"
             android:layout_alignParentRight="true"
             android:layout_margin="@dimen/margin_small"
-            android:layout_above="@+id/sbProgress"/>
+            android:layout_above="@+id/sbProgress"
+            android:textStyle="italic"/>
     </RelativeLayout>
 </LinearLayout>

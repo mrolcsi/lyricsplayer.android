@@ -197,6 +197,12 @@ public class Song {
         BASS_ChannelPlay(stream, false);
     }
 
+    public void resume(double seconds) {
+        final long bytes = BASS_ChannelSeconds2Bytes(this.stream, seconds);
+        BASS_ChannelSetPosition(this.stream, bytes, BASS_POS_BYTE);
+        BASS_ChannelPlay(stream, false);
+    }
+
     public void seekSeconds(double seconds) {
         final long bytes = BASS_ChannelSeconds2Bytes(this.stream, seconds);
         BASS_ChannelSetPosition(stream, bytes, BASS_POS_BYTE);
@@ -211,5 +217,11 @@ public class Song {
     }
 
     //endregion
+
+
+    @Override
+    public String toString() {
+        return getArtist() + " - " + getTitle() + " [" + getTotalTimeString() + "]";
+    }
 }
 

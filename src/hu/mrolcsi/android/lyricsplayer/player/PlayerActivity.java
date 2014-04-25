@@ -210,7 +210,7 @@ public class PlayerActivity extends Activity {
                 if (currentSong != null) {
                     final int status = currentSong.getStatus();
                     if (status == BASS.BASS_ACTIVE_PAUSED) {
-                        currentSong.resume();
+                        currentSong.resume(sbProgress.getProgress());
                         timerHandler.postDelayed(timerRunnable, 0);
 
                         btnPlayPause.setImageResource(R.drawable.player_pause);
@@ -251,13 +251,25 @@ public class PlayerActivity extends Activity {
         btnEditLyrics.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (currentSong.getStatus() == BASS.BASS_ACTIVE_PLAYING) {
+                if (currentSong.getStatus() != BASS.BASS_ACTIVE_PLAYING) {
+                    currentSong.pause();
+                    timerHandler.removeCallbacks(timerRunnable);
+                    btnPlayPause.setImageResource(R.drawable.player_play);
+
+                    Intent intent = new Intent(PlayerActivity.this, EditorActivity.class);
+                    intent.putExtra("currentSong", currentSong.getPath());
+                    startActivity(intent);
+                } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(PlayerActivity.this);
                     builder.setTitle("Song is playing")
                             .setMessage("A song is currently playing. Stop playback and open Editor?")
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
+                                    currentSong.pause();
+                                    timerHandler.removeCallbacks(timerRunnable);
+                                    btnPlayPause.setImageResource(R.drawable.player_play);
+
                                     Intent intent = new Intent(PlayerActivity.this, EditorActivity.class);
                                     intent.putExtra("currentSong", currentSong.getPath());
                                     startActivity(intent);
@@ -271,10 +283,6 @@ public class PlayerActivity extends Activity {
                             });
                     final AlertDialog dialog = builder.create();
                     dialog.show();
-                } else {
-                    Intent i = new Intent(PlayerActivity.this, EditorActivity.class);
-                    i.putExtra("currentSong", currentSong.getPath());
-                    startActivity(i);
                 }
             }
         });

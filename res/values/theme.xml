@@ -2,11 +2,11 @@
 <resources>
 
     <style name="LyricsPlayer" parent="android:Theme.DeviceDefault.Light">
-    <item name="android:imageButtonStyle">@style/LyricsPlayer.ImageButton</item>
+        <item name="android:imageButtonStyle">@style/LyricsPlayer.ImageButton</item>
     </style>
 
     <style name="LyricsPlayer.NoActionBar" parent="android:Theme.DeviceDefault.Light.NoActionBar">
-
+        <item name="android:imageButtonStyle">@style/LyricsPlayer.ImageButton</item>
     </style>
 
     <style name="LyricsPlayer.ImageButton">
