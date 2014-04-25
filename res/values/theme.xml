@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="LyricsPlayer" parent="android:Theme.DeviceDefault.Light.NoActionBar">
-        <item name="android:imageButtonStyle">@style/LyricsPlayer.ImageButton</item>
+    <style name="LyricsPlayer" parent="android:Theme.DeviceDefault.Light">
+    <item name="android:imageButtonStyle">@style/LyricsPlayer.ImageButton</item>
+    </style>
+
+    <style name="LyricsPlayer.NoActionBar" parent="android:Theme.DeviceDefault.Light.NoActionBar">
+
     </style>
 
     <style name="LyricsPlayer.ImageButton">

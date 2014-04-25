@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="hu.mrolcsi.android.lyricsplayer"
-          android:versionName="0.1alpha"
-          android:versionCode="1">
+          android:versionName="0.6"
+          android:versionCode="14">
 
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="19"/>
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
 
@@ -19,7 +20,7 @@
 
         <activity
             android:name=".player.PlayerActivity"
-            android:theme="@style/LyricsPlayer"
+            android:theme="@style/LyricsPlayer.NoActionBar"
             android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -33,6 +34,8 @@
         </activity>
         <activity
             android:name=".player.editor.EditorActivity"
-            android:label="LRC Editor"/>
+            android:label="@string/editor_label"
+            android:theme="@style/LyricsPlayer"
+            android:configChanges="orientation|screenSize"/>
     </application>
 </manifest>

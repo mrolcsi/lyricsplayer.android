@@ -10,4 +10,10 @@
     <string name="player_nointernetconnection">No Internet connection.</string>
     <string name="player_connecttointernetfirst">Connect to Internet first!</string>
     <string name="player_downloadinglyrics">Downloading lyrics…</string>
+    <string name="editor_label">LRC Editor</string>
+    <string name="editor_menu_addline">Add</string>
+    <string name="editor_menu_save">Save</string>
+    <string name="editor_title_format"><![CDATA[<b>%1$s</b> - %2$s]]></string>
+    <string name="player_starttime">00:00</string>
+    <string name="editor_time_format">%1$s / %2$s</string>
 </resources>

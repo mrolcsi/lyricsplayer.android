@@ -1,6 +1,9 @@
 package hu.mrolcsi.android.lyricsplayer.player;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -16,6 +19,7 @@ import android.widget.TextView;
 import com.un4seen.bass.BASS;
 import hu.mrolcsi.android.filebrowser.BrowserDialog;
 import hu.mrolcsi.android.lyricsplayer.R;
+import hu.mrolcsi.android.lyricsplayer.player.editor.EditorActivity;
 import hu.mrolcsi.android.lyricsplayer.player.media.Lyrics;
 import hu.mrolcsi.android.lyricsplayer.player.media.OnLyricsReached;
 import hu.mrolcsi.android.lyricsplayer.player.media.Song;
@@ -93,6 +97,7 @@ public class PlayerActivity extends Activity {
     private TextView tvTopLine;
     private TextView tvMiddleLine;
     private TextView tvBottomLine;
+    private ImageButton btnEditLyrics;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -150,6 +155,8 @@ public class PlayerActivity extends Activity {
 
     private void initViews() {
         btnOpen = (ImageButton) findViewById(R.id.btnOpen);
+        btnEditLyrics = (ImageButton) findViewById(R.id.btnEditLyrics);
+
         btnPlayPause = (ImageButton) findViewById(R.id.btnPlayPause);
         btnPrev = (ImageButton) findViewById(R.id.btnPrev);
         btnNext = (ImageButton) findViewById(R.id.btnNext);
@@ -238,6 +245,37 @@ public class PlayerActivity extends Activity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+
+        btnEditLyrics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (currentSong.getStatus() == BASS.BASS_ACTIVE_PLAYING) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(PlayerActivity.this);
+                    builder.setTitle("Song is playing")
+                            .setMessage("A song is currently playing. Stop playback and open Editor?")
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Intent intent = new Intent(PlayerActivity.this, EditorActivity.class);
+                                    intent.putExtra("currentSong", currentSong.getPath());
+                                    startActivity(intent);
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    dialogInterface.dismiss();
+                                }
+                            });
+                    final AlertDialog dialog = builder.create();
+                    dialog.show();
+                } else {
+                    Intent i = new Intent(PlayerActivity.this, EditorActivity.class);
+                    i.putExtra("currentSong", currentSong.getPath());
+                    startActivity(i);
+                }
             }
         });
     }

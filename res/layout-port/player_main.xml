@@ -76,7 +76,9 @@
         android:layout_above="@+id/tvArtistAlbum"
         android:layout_margin="@dimen/margin_medium"
         android:layout_toRightOf="@+id/btnOpen"
-        android:layout_toLeftOf="@+id/btnDummy"/>
+        android:layout_toLeftOf="@+id/btnEditLyrics"
+        android:maxLines="2"
+        android:ellipsize="marquee"/>
 
     <TextView
         android:layout_width="fill_parent"
@@ -89,7 +91,9 @@
         android:gravity="center"
         android:layout_above="@+id/btnPlayPause"
         android:layout_centerHorizontal="true"
-        android:layout_margin="@dimen/margin_medium"/>
+        android:layout_margin="@dimen/margin_medium"
+        android:maxLines="2"
+        android:ellipsize="marquee"/>
 
     <ImageButton
         android:layout_width="wrap_content"
@@ -103,12 +107,11 @@
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/btnDummy"
+        android:id="@+id/btnEditLyrics"
         android:layout_alignParentLeft="false"
-        android:src="@drawable/player_open"
+        android:src="@drawable/editor_edit"
         android:layout_margin="@dimen/margin_medium"
         android:layout_below="@+id/imgCover"
-        android:visibility="invisible"
         android:clickable="false"
         android:layout_alignParentRight="true"/>
 

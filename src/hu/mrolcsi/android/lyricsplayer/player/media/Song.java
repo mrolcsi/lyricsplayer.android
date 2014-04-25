@@ -130,6 +130,26 @@ public class Song {
         return BitmapFactory.decodeByteArray(binaryData, 0, binaryData.length);
     }
 
+    public void setLyrics(Lyrics lyrics, OnLyricsReached onLyricsReached) {
+        if (onLyricsReached == null) {
+            onLyricsReached = new OnLyricsReached() {
+                @Override
+                public void onLyricsReached(String currentLine, String previousLine, String nextLine) {
+                    // do nothing
+                }
+            };
+        }
+        if (this.onLyricsReached == null) {
+            this.onLyricsReached = onLyricsReached;
+        }
+
+        this.lyrics = lyrics;
+    }
+
+    public Lyrics getLyrics() {
+        return lyrics;
+    }
+
 //endregion
 
 //region Playback Control
@@ -186,28 +206,10 @@ public class Song {
         BASS_ChannelSetPosition(this.stream, bytes, BASS_POS_BYTE);
     }
 
+    public String getPath() {
+        return filePath;
+    }
+
     //endregion
-
-    public void setLyrics(Lyrics lyrics, OnLyricsReached onLyricsReached) {
-        if (onLyricsReached == null) {
-            onLyricsReached = new OnLyricsReached() {
-                @Override
-                public void onLyricsReached(String currentLine, String previousLine, String nextLine) {
-                    // do nothing
-                }
-            };
-        }
-        if (this.onLyricsReached == null) {
-            this.onLyricsReached = onLyricsReached;
-        }
-
-        this.lyrics = lyrics;
-    }
-
-    public Lyrics getLyrics() {
-        return lyrics;
-    }
-
-
 }
 
