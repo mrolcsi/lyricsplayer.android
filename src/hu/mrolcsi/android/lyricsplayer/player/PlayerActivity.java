@@ -43,6 +43,7 @@ public class PlayerActivity extends Activity {
 
     private static final String TAG = "LyricsPlayer.Player";
     private static final String PREF_LASTSONG = "LyricsPlayer.lastSong";
+    private static final String CURRENT_SONG = "LyricsPlayer.currentSong";
 
     Handler timerHandler = new Handler();
     Runnable timerRunnable = new Runnable() {
@@ -257,12 +258,12 @@ public class PlayerActivity extends Activity {
                     btnPlayPause.setImageResource(R.drawable.player_play);
 
                     Intent intent = new Intent(PlayerActivity.this, EditorActivity.class);
-                    intent.putExtra("currentSong", currentSong.getPath());
+                    intent.putExtra(CURRENT_SONG, currentSong.getPath());
                     startActivity(intent);
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(PlayerActivity.this);
-                    builder.setTitle("Song is playing")
-                            .setMessage("A song is currently playing. Stop playback and open Editor?")
+                    builder.setTitle(R.string.player_alert_songisplaying_title)
+                            .setMessage(R.string.player_alert_songisplaying_message)
                             .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
@@ -271,7 +272,7 @@ public class PlayerActivity extends Activity {
                                     btnPlayPause.setImageResource(R.drawable.player_play);
 
                                     Intent intent = new Intent(PlayerActivity.this, EditorActivity.class);
-                                    intent.putExtra("currentSong", currentSong.getPath());
+                                    intent.putExtra(CURRENT_SONG, currentSong.getPath());
                                     startActivity(intent);
                                 }
                             })

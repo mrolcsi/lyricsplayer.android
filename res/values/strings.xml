@@ -16,4 +16,6 @@
     <string name="editor_title_format"><![CDATA[<b>%1$s</b> - %2$s]]></string>
     <string name="player_starttime">00:00</string>
     <string name="editor_time_format">%1$s / %2$s</string>
+    <string name="player_alert_songisplaying_message">A song is currently playing.\nStop playback and open Editor?</string>
+    <string name="player_alert_songisplaying_title">Song is playing</string>
 </resources>
