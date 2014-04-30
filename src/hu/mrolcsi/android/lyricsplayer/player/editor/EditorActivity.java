@@ -1,6 +1,8 @@
 package hu.mrolcsi.android.lyricsplayer.player.editor;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.Html;
@@ -139,15 +141,49 @@ public class EditorActivity extends Activity {
                 final LyricLine item = (LyricLine) adapterView.getItemAtPosition(i);
                 item.setTime(currentSong.getElapsedTimeSeconds());
                 ((LRCAdapter) adapterView.getAdapter()).notifyDataSetChanged();
-                adapterView.invalidate();
+                //adapterView.invalidate();
             }
         });
 
         lvLyrics.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                // TODO
-                return false;
+            public boolean onItemLongClick(final AdapterView<?> adapterView, View view, int i, long l) {
+                final LRCAdapter adapter = (LRCAdapter) adapterView.getAdapter();
+                final LyricLine item = (LyricLine) adapterView.getItemAtPosition(i);
+
+                final View lineEditorView = View.inflate(EditorActivity.this, R.layout.editor_lineditordialog, null);
+                final EditText etLine = (EditText) lineEditorView.findViewById(R.id.etLine);
+                etLine.setText(item.getLyric());
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(EditorActivity.this);
+                builder.setView(lineEditorView)
+                        .setIcon(R.drawable.editor_edit)
+                        .setTitle("Edit line " + i)
+                        .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .setNeutralButton("Delete", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                adapter.remove(item);
+                                adapter.notifyDataSetChanged();
+                                //adapterView.invalidate();
+                            }
+                        })
+                        .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                item.setLyric(etLine.getText().toString());
+                                adapter.notifyDataSetChanged();
+                                //adapterView.invalidate();
+                            }
+                        });
+                final AlertDialog dialog = builder.create();
+                dialog.show();
+                return true;
             }
         });
     }

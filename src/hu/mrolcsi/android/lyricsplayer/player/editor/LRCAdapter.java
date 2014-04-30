@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import hu.mrolcsi.android.lyricsplayer.R;
 import hu.mrolcsi.android.lyricsplayer.player.media.LyricLine;
@@ -61,20 +60,20 @@ public class LRCAdapter extends ArrayAdapter<LyricLine> {
 
     @Override
     public void add(LyricLine object) {
-        super.add(object);
-        // TODO: implement method
+        lyrics.add(object);
+        notifyDataSetChanged();
     }
 
     @Override
     public void insert(LyricLine object, int index) {
-        super.insert(object, index);
-        // TODO: implement method
+        lyrics.add(index, object);
+        notifyDataSetChanged();
     }
 
     @Override
     public void remove(LyricLine object) {
-        super.remove(object);
-        // TODO: implement method
+        lyrics.remove(object);
+        notifyDataSetChanged();
     }
 
     @Override
@@ -100,8 +99,6 @@ public class LRCAdapter extends ArrayAdapter<LyricLine> {
             convertView.setTag(holder);
         } else holder = (LyricsHolder) convertView.getTag();
 
-        //TODO: buttons?
-
         final LyricLine item = getItem(position);
 
         holder.tvTime.setText(item.getTimeTag());
@@ -114,7 +111,4 @@ public class LRCAdapter extends ArrayAdapter<LyricLine> {
 class LyricsHolder {
     TextView tvTime;
     TextView tvText;
-
-    ImageButton btnDelete;
-    ImageButton btnEdit;
 }
