@@ -5,7 +5,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.text.Html;
 import android.util.Log;
 import hu.mrolcsi.android.lyricsplayer.R;
 import hu.mrolcsi.android.lyricsplayer.player.media.Lyrics;
@@ -16,10 +15,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -45,19 +41,12 @@ public class LyricsDownloaderTask extends AsyncTask<String, String, Lyrics> {
 
     @Override
     protected Lyrics doInBackground(String... strings) {
-        //
-        //TODO:
-        // check network state
-        // fetch lyrics
-        // check if lyrics present
-        // if empty > tell GUI
-        //
 
         //check network state
         ConnectivityManager conMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
 
         if (conMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getState() == NetworkInfo.State.CONNECTED
-                || conMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTING) {
+                || conMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE).getState() == NetworkInfo.State.CONNECTED) {
 
             //notify user you are online
             HttpClient httpclient = new DefaultHttpClient();
@@ -95,17 +84,23 @@ public class LyricsDownloaderTask extends AsyncTask<String, String, Lyrics> {
                             // now you have the string representation of the HTML request
                             inStream.close();
 
-                            String lrc = Html.fromHtml(result).toString();
+                            try {
+                                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new FileOutputStream(strings[2]));
+                                outputStreamWriter.write(result);
+                                outputStreamWriter.close();
+                            } catch (IOException e) {
+                                Log.e(TAG, "File write failed: " + e.toString());
+                            }
 
                             //TODO: cache file on sdcard
 
                             publishProgress(null, null, context.getString(R.string.player_downloadinglyrics));
-                            return new Lyrics(lrc);
+                            return new Lyrics(result);
                         }
                         break;
                     case 404:
                         //no lyrics
-                        publishProgress("Error", null, "No lyrics found.");
+                        publishProgress(context.getString(R.string.downloader_error), null, context.getString(R.string.downloader_error_nolyricsfound));
                         cancel(true);
                     default:
                         break;

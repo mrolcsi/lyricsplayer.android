@@ -29,8 +29,7 @@ import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
 import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
 import org.jaudiotagger.tag.TagException;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -189,7 +188,6 @@ public class PlayerActivity extends Activity {
                     bd.setCurrentPath(new File(sharedPrefs.getString(PREF_LASTSONG, null)).getParent());
                 }
 
-
                 bd.setStartPath(startPath);
                 bd.setOnDialogResultListener(new BrowserDialog.OnDialogResultListener() {
                     @Override
@@ -310,48 +308,67 @@ public class PlayerActivity extends Activity {
             editor.putString(PREF_LASTSONG, path);
             editor.apply();
 
-            new LyricsDownloaderTask(this) {
-                @Override
-                protected void onPreExecute() {
-                    super.onPreExecute();
+            //load lyrics from cache
 
-                    tvTopLine.setText(R.string.player_pleasewait);
-                    tvMiddleLine.setText(R.string.player_fetchinglyrics);
+            File lrcFile = new File(currentSong.getLRCPath());
+            if (lrcFile.exists()) {
+                try {
+                    String lrc = "";
+                    //load string from file
+                    InputStream inputStream = new FileInputStream(currentSong.getLRCPath());
+                    InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                    String receiveString = "";
+                    StringBuilder stringBuilder = new StringBuilder();
+
+                    while ((receiveString = bufferedReader.readLine()) != null) {
+                        stringBuilder.append(receiveString);
+                    }
+
+                    inputStream.close();
+                    lrc = stringBuilder.toString();
+
+                    lrcLoaded(new Lyrics(lrc));
+                } catch (FileNotFoundException e) {
+                    Log.e(TAG, "File not found: " + e.toString());
+                } catch (IOException e) {
+                    Log.e(TAG, "Can not read file: " + e.toString());
                 }
 
-                @Override
-                protected void onPostExecute(final Lyrics lyrics) {
-                    super.onPostExecute(lyrics);
 
-                    tvTopLine.setText(R.string.player_success);
-                    tvMiddleLine.setText(R.string.player_lyricsdownloaded);
-                    tvBottomLine.setText(R.string.player_enjoy);
+            } else {
 
-                    OnLyricsReached onLyricsReached = new OnLyricsReached() {
-                        @Override
-                        public void onLyricsReached(final String currentLine, final String previousLine, final String nextLine) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    tvTopLine.setText(previousLine);
-                                    tvMiddleLine.setText(currentLine);
-                                    tvBottomLine.setText(nextLine);
-                                }
-                            });
 
-                        }
-                    };
-                    currentSong.setLyrics(lyrics, onLyricsReached);
-                }
+                //new Lyrics(...)
 
-                @Override
-                protected void onProgressUpdate(final String... values) {
-                    super.onProgressUpdate(values);
-                    if (values[0] != null) tvTopLine.setText(values[0]);
-                    if (values[1] != null) tvMiddleLine.setText(values[1]);
-                    if (values[2] != null) tvBottomLine.setText(values[2]);
-                }
-            }.execute(currentSong.getArtist(), currentSong.getTitle());
+                //download lyrics
+
+                new LyricsDownloaderTask(this) {
+                    @Override
+                    protected void onPreExecute() {
+                        super.onPreExecute();
+
+                        tvTopLine.setText(R.string.player_pleasewait);
+                        tvMiddleLine.setText(R.string.player_fetchinglyrics);
+                    }
+
+                    @Override
+                    protected void onPostExecute(final Lyrics lyrics) {
+                        super.onPostExecute(lyrics);
+
+                        lrcLoaded(lyrics);
+                    }
+
+                    @Override
+                    protected void onProgressUpdate(final String... values) {
+                        super.onProgressUpdate(values);
+                        if (values[0] != null) tvTopLine.setText(values[0]);
+                        if (values[1] != null) tvMiddleLine.setText(values[1]);
+                        if (values[2] != null) tvBottomLine.setText(values[2]);
+                    }
+                }.execute(currentSong.getArtist(), currentSong.getTitle(), currentSong.getLRCPath());
+            }
+
         } catch (TagException e) {
             Log.w(TAG, e);
         } catch (ReadOnlyFileException e) {
@@ -363,5 +380,27 @@ public class PlayerActivity extends Activity {
         } catch (IOException e) {
             Log.w(TAG, e);
         }
+    }
+
+    private void lrcLoaded(Lyrics lyrics) {
+        tvTopLine.setText(R.string.player_success);
+        tvMiddleLine.setText(R.string.player_lyricsdownloaded);
+        tvBottomLine.setText(R.string.player_enjoy);
+
+        OnLyricsReached onLyricsReached = new OnLyricsReached() {
+            @Override
+            public void onLyricsReached(final String currentLine, final String previousLine, final String nextLine) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        tvTopLine.setText(previousLine);
+                        tvMiddleLine.setText(currentLine);
+                        tvBottomLine.setText(nextLine);
+                    }
+                });
+
+            }
+        };
+        currentSong.setLyrics(lyrics, onLyricsReached);
     }
 }

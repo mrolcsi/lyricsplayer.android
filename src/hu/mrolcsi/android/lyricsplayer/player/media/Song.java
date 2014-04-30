@@ -2,6 +2,7 @@ package hu.mrolcsi.android.lyricsplayer.player.media;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.util.Log;
 import org.jaudiotagger.audio.AudioFile;
 import org.jaudiotagger.audio.AudioFileIO;
@@ -216,6 +217,10 @@ public class Song {
         return filePath;
     }
 
+    public String getLRCPath() {
+        File f = new File(filePath);
+        return Environment.getExternalStorageDirectory().getPath() + File.separator + Lyrics.LRC_CACHE_DIR + File.separator + f.getName() + Lyrics.LRC_EXTENSION;
+    }
     //endregion
 
 

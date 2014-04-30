@@ -4,7 +4,7 @@
     <string name="player_fetchinglyrics">Fetching lyrics.</string>
     <string name="player_pleasewait">Please wait.</string>
     <string name="player_success">Success.</string>
-    <string name="player_lyricsdownloaded">Lyrics downloaded.</string>
+    <string name="player_lyricsdownloaded">Lyrics loaded.</string>
     <string name="player_enjoy">Enjoy!</string>
     <string name="player_failed">Failed.</string>
     <string name="player_nointernetconnection">No Internet connection.</string>
@@ -18,4 +18,6 @@
     <string name="editor_time_format">%1$s / %2$s</string>
     <string name="player_alert_songisplaying_message">A song is currently playing.\nStop playback and open Editor?</string>
     <string name="player_alert_songisplaying_title">Song is playing</string>
+    <string name="downloader_error">Error</string>
+    <string name="downloader_error_nolyricsfound">No lyrics found.</string>
 </resources>

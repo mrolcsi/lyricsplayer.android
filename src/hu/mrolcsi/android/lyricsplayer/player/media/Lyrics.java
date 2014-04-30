@@ -13,6 +13,8 @@ import java.util.regex.Pattern;
 
 public class Lyrics {
 
+    public static final String LRC_CACHE_DIR = "Lyrics";
+    public static final String LRC_EXTENSION = ".lrc";
     private static final String LRC_LINE_REGEXP = "\\[[0-9]{2}:[0-9]{2}\\.[0-9]{2}].*";
     private final ArrayList<String> lrcLines;
     private List<LyricLine> lyrics;
