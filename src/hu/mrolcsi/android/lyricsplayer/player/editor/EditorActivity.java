@@ -10,12 +10,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
-import android.widget.ListView;
-import android.widget.SeekBar;
-import android.widget.TextView;
+import android.widget.*;
 import com.un4seen.bass.BASS;
 import hu.mrolcsi.android.lyricsplayer.R;
+import hu.mrolcsi.android.lyricsplayer.player.PlayerActivity;
+import hu.mrolcsi.android.lyricsplayer.player.media.LyricLine;
 import hu.mrolcsi.android.lyricsplayer.player.media.Song;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
 import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
@@ -67,9 +66,9 @@ public class EditorActivity extends Activity {
         initListeners();
 
         //get song to edit
-        String path = null;
-        if (getIntent().hasExtra("currentSong")) {
-            path = getIntent().getStringExtra("currentSong");
+        String path;
+        if (getIntent().hasExtra(PlayerActivity.CURRENT_SONG)) {
+            path = getIntent().getStringExtra(PlayerActivity.CURRENT_SONG);
             loadSong(path);
         }
     }
@@ -129,6 +128,28 @@ public class EditorActivity extends Activity {
 
             }
         });
+
+        lvLyrics.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                //get current time
+                //set current time on current line
+                //refresh views
+
+                final LyricLine item = (LyricLine) adapterView.getItemAtPosition(i);
+                item.setTime(currentSong.getElapsedTimeSeconds());
+                ((LRCAdapter) adapterView.getAdapter()).notifyDataSetChanged();
+                adapterView.invalidate();
+            }
+        });
+
+        lvLyrics.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                // TODO
+                return false;
+            }
+        });
     }
 
     @Override
@@ -145,11 +166,16 @@ public class EditorActivity extends Activity {
                 //TODO
                 return true;
             case R.id.menuSaveLyrics:
-                //TODO
+                saveLRC();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    private void saveLRC() {
+        //TODO
+
     }
 
     private void loadSong(String path) {
@@ -170,14 +196,12 @@ public class EditorActivity extends Activity {
                 }
             });
 
-            //lyricsDownloader
-            //lvLyrics.setAdapter(new LyricsAdapter())
-
-
             final Spanned title = Html.fromHtml(String.format(getString(R.string.editor_title_format), currentSong.getArtist(), currentSong.getTitle()));
             tvTitle.setText(title);
             sbProgress.setMax((int) currentSong.getTotalTimeSeconds());
             tvTime.setText(String.format(getString(R.string.editor_time_format), getString(R.string.player_starttime), currentSong.getTotalTimeString()));
+
+            lvLyrics.setAdapter(new LRCAdapter(this, currentSong.getLRCPath()));
 
         } catch (TagException e) {
             Log.w(TAG, e);
@@ -190,6 +214,5 @@ public class EditorActivity extends Activity {
         } catch (IOException e) {
             Log.w(TAG, e);
         }
-
     }
 }

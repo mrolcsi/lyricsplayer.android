@@ -174,13 +174,13 @@ public class Song {
         if (lyrics != null) {
             final List<LyricLine> allLyrics = lyrics.getAllLyrics();
             for (int i = 0; i < allLyrics.size(); i++) {
-                final long bytes = BASS_ChannelSeconds2Bytes(this.stream, allLyrics.get(i).time);
+                final long bytes = BASS_ChannelSeconds2Bytes(this.stream, allLyrics.get(i).getTime());
 
                 final int currentLine = i;
                 SYNCPROC callback = new SYNCPROC() {
                     @Override
                     public void SYNCPROC(int handle, int channel, int data, Object user) {
-                        onLyricsReached.onLyricsReached(allLyrics.get(currentLine).lyric, currentLine - 1 >= 0 ? allLyrics.get(currentLine - 1).lyric : "", currentLine + 1 < allLyrics.size() ? allLyrics.get(currentLine + 1).lyric : "");
+                        onLyricsReached.onLyricsReached(allLyrics.get(currentLine).getLyric(), currentLine - 1 >= 0 ? allLyrics.get(currentLine - 1).getLyric() : "", currentLine + 1 < allLyrics.size() ? allLyrics.get(currentLine + 1).getLyric() : "");
                     }
                 };
 

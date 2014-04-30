@@ -1,6 +1,9 @@
 package hu.mrolcsi.android.lyricsplayer.player.media;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -97,28 +100,3 @@ public class Lyrics {
 //    }
 }
 
-class LyricLine {
-
-    public static final Comparator<LyricLine> COMPARATOR = new Comparator<LyricLine>() {
-        @Override
-        public int compare(LyricLine lyricLine, LyricLine lyricLine2) {
-            return (int) (lyricLine.time - lyricLine2.time);
-        }
-    };
-
-    double time;
-    String lyric;
-
-    LyricLine(double time, String lyric) {
-        this.time = time;
-        this.lyric = lyric;
-    }
-
-    @Override
-    public String toString() {
-        return "LyricLine{" +
-                time +
-                ", '" + lyric + '\'' +
-                '}';
-    }
-}

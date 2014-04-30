@@ -2,7 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="wrap_content"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:orientation="horizontal">
 
     <TextView
@@ -12,28 +12,22 @@
         android:id="@+id/tvTime"
         android:layout_margin="@dimen/margin_small"
         android:layout_gravity="center_vertical"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        android:typeface="monospace"
+        android:paddingTop="@dimen/margin_medium"
+        android:paddingBottom="@dimen/margin_medium"/>
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="asdA:SD:Asda.sd"
         android:id="@+id/tvText"
         android:layout_margin="@dimen/margin_small"
         android:layout_gravity="center_vertical"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:ellipsize="marquee"
+        android:singleLine="false"
+        android:paddingTop="@dimen/margin_medium"
+        android:paddingBottom="@dimen/margin_medium"/>
 
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnDelete"
-        android:layout_margin="@dimen/margin_small"
-        android:src="@drawable/editor_delete"/>
-
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btnEdit"
-        android:layout_margin="@dimen/margin_small"
-        android:src="@drawable/editor_edit"/>
 </LinearLayout>

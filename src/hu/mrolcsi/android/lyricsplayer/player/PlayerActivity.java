@@ -40,10 +40,9 @@ import java.io.*;
 
 public class PlayerActivity extends Activity {
 
+    public static final String CURRENT_SONG = "LyricsPlayer.currentSong";
     private static final String TAG = "LyricsPlayer.Player";
     private static final String PREF_LASTSONG = "LyricsPlayer.lastSong";
-    private static final String CURRENT_SONG = "LyricsPlayer.currentSong";
-
     Handler timerHandler = new Handler();
     Runnable timerRunnable = new Runnable() {
         //To start handler, call:
@@ -308,65 +307,12 @@ public class PlayerActivity extends Activity {
             editor.putString(PREF_LASTSONG, path);
             editor.apply();
 
-            //load lyrics from cache
-
+            //try load lyrics from cache
             File lrcFile = new File(currentSong.getLRCPath());
             if (lrcFile.exists()) {
-                try {
-                    String lrc = "";
-                    //load string from file
-                    InputStream inputStream = new FileInputStream(currentSong.getLRCPath());
-                    InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
-                    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-                    String receiveString = "";
-                    StringBuilder stringBuilder = new StringBuilder();
-
-                    while ((receiveString = bufferedReader.readLine()) != null) {
-                        stringBuilder.append(receiveString);
-                    }
-
-                    inputStream.close();
-                    lrc = stringBuilder.toString();
-
-                    lrcLoaded(new Lyrics(lrc));
-                } catch (FileNotFoundException e) {
-                    Log.e(TAG, "File not found: " + e.toString());
-                } catch (IOException e) {
-                    Log.e(TAG, "Can not read file: " + e.toString());
-                }
-
-
+                loadLRCFromCache();
             } else {
-
-
-                //new Lyrics(...)
-
-                //download lyrics
-
-                new LyricsDownloaderTask(this) {
-                    @Override
-                    protected void onPreExecute() {
-                        super.onPreExecute();
-
-                        tvTopLine.setText(R.string.player_pleasewait);
-                        tvMiddleLine.setText(R.string.player_fetchinglyrics);
-                    }
-
-                    @Override
-                    protected void onPostExecute(final Lyrics lyrics) {
-                        super.onPostExecute(lyrics);
-
-                        lrcLoaded(lyrics);
-                    }
-
-                    @Override
-                    protected void onProgressUpdate(final String... values) {
-                        super.onProgressUpdate(values);
-                        if (values[0] != null) tvTopLine.setText(values[0]);
-                        if (values[1] != null) tvMiddleLine.setText(values[1]);
-                        if (values[2] != null) tvBottomLine.setText(values[2]);
-                    }
-                }.execute(currentSong.getArtist(), currentSong.getTitle(), currentSong.getLRCPath());
+                loadLRCFromNet();
             }
 
         } catch (TagException e) {
@@ -379,6 +325,59 @@ public class PlayerActivity extends Activity {
             Log.w(TAG, e);
         } catch (IOException e) {
             Log.w(TAG, e);
+        }
+    }
+
+    private void loadLRCFromNet() {
+        //download lyrics
+        new LyricsDownloaderTask(this) {
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+
+                tvTopLine.setText(R.string.player_pleasewait);
+                tvMiddleLine.setText(R.string.player_fetchinglyrics);
+            }
+
+            @Override
+            protected void onPostExecute(final Lyrics lyrics) {
+                super.onPostExecute(lyrics);
+
+                lrcLoaded(lyrics);
+            }
+
+            @Override
+            protected void onProgressUpdate(final String... values) {
+                super.onProgressUpdate(values);
+                if (values[0] != null) tvTopLine.setText(values[0]);
+                if (values[1] != null) tvMiddleLine.setText(values[1]);
+                if (values[2] != null) tvBottomLine.setText(values[2]);
+            }
+        }.execute(currentSong.getArtist(), currentSong.getTitle(), currentSong.getLRCPath());
+    }
+
+    private void loadLRCFromCache() {
+        try {
+            String lrc = "";
+            //load string from file
+            InputStream inputStream = new FileInputStream(currentSong.getLRCPath());
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            String receiveString = "";
+            StringBuilder stringBuilder = new StringBuilder();
+
+            while ((receiveString = bufferedReader.readLine()) != null) {
+                stringBuilder.append(receiveString);
+            }
+
+            inputStream.close();
+            lrc = stringBuilder.toString();
+
+            lrcLoaded(new Lyrics(lrc));
+        } catch (FileNotFoundException e) {
+            Log.e(TAG, "File not found: " + e.toString());
+        } catch (IOException e) {
+            Log.e(TAG, "Can not read file: " + e.toString());
         }
     }
 
