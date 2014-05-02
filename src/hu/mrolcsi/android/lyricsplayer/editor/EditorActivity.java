@@ -53,6 +53,23 @@ public class EditorActivity extends Activity {
             timerHandler.postDelayed(this, 500);
         }
     };
+    private BASS.SYNCPROC onSongEnd = new BASS.SYNCPROC() {
+        @Override
+        public void SYNCPROC(int handle, int channel, int data, Object user) {
+            timerHandler.removeCallbacks(timerRunnable);
+            tvTime.setText(String.format(getString(R.string.editor_time_format), getString(R.string.player_starttime), currentSong.getTotalTimeString()));
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    btnPlayPause.setImageResource(R.drawable.player_play);
+                    sbProgress.setProgress(0);
+
+                    getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                }
+            });
+        }
+    };
+
+
     private Song currentSong;
     private ListView lvLyrics;
     private ImageButton btnPlayPause;
@@ -94,17 +111,20 @@ public class EditorActivity extends Activity {
                         timerHandler.postDelayed(timerRunnable, 0);
 
                         btnPlayPause.setImageResource(R.drawable.player_pause);
+                        getWindow().addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                     } else if (status == BASS.BASS_ACTIVE_STOPPED) {
                         currentSong.play();
                         timerHandler.postDelayed(timerRunnable, 0);
 
                         btnPlayPause.setImageResource(R.drawable.player_pause);
+                        getWindow().addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                     }
                     if (status == BASS.BASS_ACTIVE_PLAYING) {
                         currentSong.pause();
                         timerHandler.removeCallbacks(timerRunnable);
 
                         btnPlayPause.setImageResource(R.drawable.player_play);
+                        getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                     }
                 }
             }
@@ -232,7 +252,7 @@ public class EditorActivity extends Activity {
                 }
             });
 
-            final Spanned title = Html.fromHtml(String.format(getString(R.string.editor_title_format), currentSong.getArtist(), currentSong.getTitle()));
+            final Spanned title = Html.fromHtml(String.format(getString(R.string.editor_title_format), currentSong.getTitle(), currentSong.getArtist()));
             tvTitle.setText(title);
             sbProgress.setMax((int) currentSong.getTotalTimeSeconds());
             tvTime.setText(String.format(getString(R.string.editor_time_format), getString(R.string.player_starttime), currentSong.getTotalTimeString()));

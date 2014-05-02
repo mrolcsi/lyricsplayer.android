@@ -66,7 +66,7 @@ public class PlayerActivity extends Activity {
     private BASS.SYNCPROC onSongEnd = new BASS.SYNCPROC() {
         @Override
         public void SYNCPROC(int handle, int channel, int data, Object user) {
-            BASS.BASS_ChannelStop(channel);
+            //BASS.BASS_ChannelStop(channel);
             timerHandler.removeCallbacks(timerRunnable);
 
             runOnUiThread(new Runnable() {
@@ -75,6 +75,8 @@ public class PlayerActivity extends Activity {
                     sbProgress.setProgress(0);
                     tvElapsedTime.setText(currentSong.getElapsedTimeString());
                     tvRemainingTime.setText(currentSong.getRemainingTimeString());
+
+                    getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                 }
             });
         }
@@ -212,17 +214,23 @@ public class PlayerActivity extends Activity {
                         timerHandler.postDelayed(timerRunnable, 0);
 
                         btnPlayPause.setImageResource(R.drawable.player_pause);
+
+                        getWindow().addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                     } else if (status == BASS.BASS_ACTIVE_STOPPED) {
                         currentSong.play();
                         timerHandler.postDelayed(timerRunnable, 0);
 
                         btnPlayPause.setImageResource(R.drawable.player_pause);
+
+                        getWindow().addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                     }
                     if (status == BASS.BASS_ACTIVE_PLAYING) {
                         currentSong.pause();
                         timerHandler.removeCallbacks(timerRunnable);
 
                         btnPlayPause.setImageResource(R.drawable.player_play);
+
+                        getWindow().clearFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
                     }
                 }
             }
