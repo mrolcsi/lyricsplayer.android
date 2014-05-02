@@ -1,4 +1,4 @@
-package hu.mrolcsi.android.lyricsplayer.player.editor;
+package hu.mrolcsi.android.lyricsplayer.editor;
 
 import android.content.Context;
 import android.util.Log;
@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import hu.mrolcsi.android.lyricsplayer.R;
-import hu.mrolcsi.android.lyricsplayer.player.media.LyricLine;
-import hu.mrolcsi.android.lyricsplayer.player.media.Lyrics;
+import hu.mrolcsi.android.lyricsplayer.media.LyricLine;
+import hu.mrolcsi.android.lyricsplayer.media.Lyrics;
 
 import java.io.*;
 import java.util.List;

@@ -1,4 +1,4 @@
-package hu.mrolcsi.android.lyricsplayer.player.media;
+package hu.mrolcsi.android.lyricsplayer.media;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,8 +18,10 @@ public class Lyrics {
 
     public static final String LRC_CACHE_DIR = "Lyrics";
     public static final String LRC_EXTENSION = ".lrc";
-    private static final String LRC_LINE_REGEXP = "\\[[0-9]{2}:[0-9]{2}\\.[0-9]{2}].*";
-    private final ArrayList<String> lrcLines;
+    //private static final String LRC_LINE_REGEXP = "\\[([0-9]{2}:[0-9]{2}\\.[0-9]{2})](.*)";
+    private static final String LRC_LINE_REGEXP = "\\[([0-9\\.:]+)](.*)";
+    private static final String LRC_TIME_LONG_REGEXP = "^([0-9]{2}):([0-9]{2})\\.([0-9]{2})$";
+    private static final String LRC_TIME_SHORT_REGEXP = "^([0-9]{2}):([0-9]{2})$";
     private List<LyricLine> lyrics;
     private double offset;
 
@@ -32,13 +34,14 @@ public class Lyrics {
         Pattern offsetPattern = Pattern.compile("\\[offset: ([-0-9]+)].*");
 
         //get lines with valid tag
-        lrcLines = new ArrayList<String>();
+        lyrics = new ArrayList<LyricLine>();
+
         Pattern linePattern = Pattern.compile(LRC_LINE_REGEXP);
         for (String line : split) {
-            Matcher timeMatcher = linePattern.matcher(line);
+            Matcher lineMatcher = linePattern.matcher(line);
 
-            if (timeMatcher.matches()) {
-                lrcLines.add(line);
+            if (lineMatcher.matches()) {
+                lyrics.add(new LyricLine(getSecondsFromTag(lineMatcher.group(1)), lineMatcher.group(2)));
             }
 
             Matcher offsetMatcher = offsetPattern.matcher(line);
@@ -47,28 +50,24 @@ public class Lyrics {
                 offset = Double.parseDouble(offsetMatcher.group(1)) / 1000d;
             }
         }
-
-        buildLyrics();
+        Collections.sort(lyrics, LyricLine.COMPARATOR);
     }
 
     private static double getSecondsFromTag(String tag) {
-        //[00:00.00]asdasdasd
         double seconds = 0;
-        seconds += Integer.parseInt(tag.substring(1, 3)) * 60;
-        seconds += Integer.parseInt(tag.substring(4, 6));
-        seconds += Integer.parseInt(tag.substring(7, 9)) / 100d;
-        return seconds;
-    }
+        if (tag.length() == 8) {
+            //00:00.00
+            seconds += Integer.parseInt(tag.substring(0, 2)) * 60;
+            seconds += Integer.parseInt(tag.substring(3, 5));
+            seconds += Integer.parseInt(tag.substring(6, 8)) / 100d;
+            return seconds;
+        } else if (tag.length() == 5) {
+            //00:00
+            seconds += Integer.parseInt(tag.substring(0, 2)) * 60;
+            seconds += Integer.parseInt(tag.substring(3, 5));
+            return seconds;
+        } else throw new IllegalArgumentException("Not a valid time tag.");
 
-    private void buildLyrics() {
-        lyrics = new ArrayList<LyricLine>();
-        for (String line : lrcLines) {
-            final double secondsFromTag = getSecondsFromTag(line.substring(0, 10));
-            final String lyric = line.substring(10);
-
-            lyrics.add(new LyricLine(secondsFromTag /*- offset*/, lyric));  //ignore offset for now...
-        }
-        Collections.sort(lyrics, LyricLine.COMPARATOR);
     }
 
     public List<LyricLine> getAllLyrics() {

@@ -33,7 +33,7 @@
             android:theme="@style/LyricsPlayer">
         </activity>
         <activity
-            android:name=".player.editor.EditorActivity"
+            android:name=".editor.EditorActivity"
             android:label="@string/editor_label"
             android:theme="@style/LyricsPlayer"
             android:configChanges="orientation|screenSize"/>

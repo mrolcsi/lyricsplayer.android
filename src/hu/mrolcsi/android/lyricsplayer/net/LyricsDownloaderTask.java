@@ -1,4 +1,4 @@
-package hu.mrolcsi.android.lyricsplayer.player.net;
+package hu.mrolcsi.android.lyricsplayer.net;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -7,7 +7,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 import hu.mrolcsi.android.lyricsplayer.R;
-import hu.mrolcsi.android.lyricsplayer.player.media.Lyrics;
+import hu.mrolcsi.android.lyricsplayer.media.Lyrics;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;

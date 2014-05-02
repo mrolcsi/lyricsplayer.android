@@ -1,4 +1,4 @@
-package hu.mrolcsi.android.lyricsplayer.player.media;
+package hu.mrolcsi.android.lyricsplayer.media;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

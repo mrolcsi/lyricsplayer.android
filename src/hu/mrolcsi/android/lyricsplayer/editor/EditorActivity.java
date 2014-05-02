@@ -1,4 +1,4 @@
-package hu.mrolcsi.android.lyricsplayer.player.editor;
+package hu.mrolcsi.android.lyricsplayer.editor;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -15,9 +15,9 @@ import android.view.View;
 import android.widget.*;
 import com.un4seen.bass.BASS;
 import hu.mrolcsi.android.lyricsplayer.R;
+import hu.mrolcsi.android.lyricsplayer.media.LyricLine;
+import hu.mrolcsi.android.lyricsplayer.media.Song;
 import hu.mrolcsi.android.lyricsplayer.player.PlayerActivity;
-import hu.mrolcsi.android.lyricsplayer.player.media.LyricLine;
-import hu.mrolcsi.android.lyricsplayer.player.media.Song;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
 import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
 import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
