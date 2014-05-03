@@ -66,7 +66,7 @@ public class PlayerActivity extends Activity {
     private BASS.SYNCPROC onSongEnd = new BASS.SYNCPROC() {
         @Override
         public void SYNCPROC(int handle, int channel, int data, Object user) {
-            //BASS.BASS_ChannelStop(channel);
+            currentSong.stop();
             timerHandler.removeCallbacks(timerRunnable);
 
             runOnUiThread(new Runnable() {

@@ -8,20 +8,23 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/imgCover"
-        android:scaleType="fitCenter"
         android:src="@drawable/player_nocover"
         android:layout_above="@+id/tvTitle"
         android:layout_alignParentTop="true"
-        android:layout_margin="@dimen/margin_medium"/>
+        android:layout_marginBottom="@dimen/margin_medium"
+        android:adjustViewBounds="true"
+        android:background="@android:color/holo_blue_bright"
+        android:scaleType="fitXY"/>
 
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/rlLyrics"
         android:layout_alignTop="@+id/imgCover"
-        android:layout_alignBottom="@+id/imgCover">
+        android:layout_alignBottom="@+id/imgCover"
+        android:layout_margin="@dimen/margin_medium">
 
-        <TextView
+    <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -74,11 +77,10 @@
         android:layout_weight="1"
         android:gravity="center"
         android:layout_above="@+id/tvArtistAlbum"
-        android:layout_margin="@dimen/margin_medium"
-        android:layout_toRightOf="@+id/btnOpen"
-        android:layout_toLeftOf="@+id/btnEditLyrics"
         android:maxLines="2"
-        android:ellipsize="marquee"/>
+        android:ellipsize="marquee"
+        android:layout_marginLeft="@dimen/margin_medium"
+        android:layout_marginRight="@dimen/margin_medium"/>
 
     <TextView
         android:layout_width="fill_parent"
@@ -91,9 +93,10 @@
         android:gravity="center"
         android:layout_above="@+id/btnPlayPause"
         android:layout_centerHorizontal="true"
-        android:layout_margin="@dimen/margin_medium"
         android:maxLines="2"
-        android:ellipsize="marquee"/>
+        android:ellipsize="marquee"
+        android:layout_marginLeft="@dimen/margin_medium"
+        android:layout_marginRight="@dimen/margin_medium"/>
 
     <ImageButton
         android:layout_width="wrap_content"
@@ -102,7 +105,7 @@
         android:layout_alignParentLeft="true"
         android:src="@drawable/player_open"
         android:layout_margin="@dimen/margin_medium"
-        android:layout_below="@+id/imgCover"/>
+        android:layout_above="@+id/tvElapsedTime"/>
 
     <ImageButton
         android:layout_width="wrap_content"
@@ -111,9 +114,9 @@
         android:layout_alignParentLeft="false"
         android:src="@drawable/editor_edit"
         android:layout_margin="@dimen/margin_medium"
-        android:layout_below="@+id/imgCover"
         android:clickable="false"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentRight="true"
+        android:layout_above="@+id/tvRemainingTime"/>
 
     <ImageButton
         android:layout_width="wrap_content"
@@ -123,13 +126,12 @@
         android:layout_above="@+id/sbProgress"
         android:layout_toLeftOf="@+id/btnPlayPause"
         android:src="@drawable/player_prev"
-        />
+        android:visibility="gone"/>
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btnPlayPause"
-        android:layout_margin="@dimen/margin_medium"
         android:layout_centerHorizontal="true"
         android:layout_above="@+id/sbProgress"
         android:src="@drawable/player_play"
@@ -143,7 +145,7 @@
         android:layout_above="@+id/sbProgress"
         android:layout_toRightOf="@+id/btnPlayPause"
         android:src="@drawable/player_next"
-        />
+        android:visibility="gone"/>
 
     <TextView
         android:layout_width="wrap_content"
