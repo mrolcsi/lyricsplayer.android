@@ -333,7 +333,7 @@ public class BrowserActivity extends Activity {
                     break;
                 case MODE_SAVE_FILE:
                     actionBar.setTitle(R.string.browser_titleSaveFile);
-                    actionBar.setIcon(R.drawable.browser_save_title);
+                    actionBar.setIcon(R.drawable.browser_save);
                     break;
             }
             actionBar.setDisplayHomeAsUpEnabled(true);

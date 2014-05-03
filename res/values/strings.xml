@@ -20,4 +20,5 @@
     <string name="player_alert_songisplaying_title">Song is playing</string>
     <string name="downloader_error">Error</string>
     <string name="downloader_error_nolyricsfound">No lyrics found.</string>
+    <string name="editor_delete">Delete</string>
 </resources>

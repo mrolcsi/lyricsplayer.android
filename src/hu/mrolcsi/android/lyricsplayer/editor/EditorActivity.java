@@ -229,8 +229,7 @@ public class EditorActivity extends Activity {
     }
 
     private void saveLRC() {
-        //TODO
-
+        Toast.makeText(this, "Not yet.", Toast.LENGTH_SHORT).show();
     }
 
     private void loadSong(String path) {
@@ -261,7 +260,6 @@ public class EditorActivity extends Activity {
                 tvNoLyrics.setVisibility(View.GONE);
                 lvLyrics.setVisibility(View.VISIBLE);
             }
-
 
         } catch (TagException e) {
             Log.w(TAG, e);
