@@ -23,6 +23,7 @@ import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
 import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
 import org.jaudiotagger.tag.TagException;
 
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -76,6 +77,7 @@ public class EditorActivity extends Activity {
     private TextView tvTitle;
     private SeekBar sbProgress;
     private TextView tvTime;
+    private TextView tvNoLyrics;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +100,7 @@ public class EditorActivity extends Activity {
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         sbProgress = (SeekBar) findViewById(R.id.sbProgress);
         tvTime = (TextView) findViewById(R.id.tvTime);
+        tvNoLyrics = (TextView) findViewById(R.id.tvNoLyrics);
     }
 
     private void initListeners() {
@@ -140,14 +143,10 @@ public class EditorActivity extends Activity {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                // TODO
-
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                // TODO
-
             }
         });
 
@@ -257,7 +256,12 @@ public class EditorActivity extends Activity {
             sbProgress.setMax((int) currentSong.getTotalTimeSeconds());
             tvTime.setText(String.format(getString(R.string.editor_time_format), getString(R.string.player_starttime), currentSong.getTotalTimeString()));
 
-            lvLyrics.setAdapter(new LRCAdapter(this, currentSong.getLRCPath()));
+            if (new File(currentSong.getLRCPath()).exists()) {
+                lvLyrics.setAdapter(new LRCAdapter(this, currentSong.getLRCPath()));
+                tvNoLyrics.setVisibility(View.GONE);
+                lvLyrics.setVisibility(View.VISIBLE);
+            }
+
 
         } catch (TagException e) {
             Log.w(TAG, e);
