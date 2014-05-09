@@ -11,6 +11,7 @@ A simple MP3 player with the capability of downloading lyrics in LRC format, and
 
 **Some features to come:**
 - Playlist support (like in any other media player)
+- Better tag support (metadata tags, multiple time tags in one line, etc.)
 - LRC Editor: 
 
 > - Paste untimed lyrics from clipboard
