@@ -13,7 +13,6 @@
         android:layout_alignParentTop="true"
         android:layout_marginBottom="@dimen/margin_medium"
         android:adjustViewBounds="true"
-        android:background="@android:color/holo_blue_bright"
         android:scaleType="fitXY"/>
 
     <RelativeLayout
@@ -24,7 +23,7 @@
         android:layout_alignBottom="@+id/imgCover"
         android:layout_margin="@dimen/margin_medium">
 
-    <TextView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"

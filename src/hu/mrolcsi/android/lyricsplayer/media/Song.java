@@ -29,6 +29,7 @@ import static com.un4seen.bass.BASS.*;
 public class Song {
 
     public static final String TIME_FORMAT = "%02d:%02d";
+    private static final String TAG = "LyricsPlayer.Lyrics";
     private String filePath;
 
     private AudioFile audioFile;
@@ -184,8 +185,8 @@ public class Song {
                     }
                 };
 
-                @SuppressWarnings("PointlessBitwiseExpression") final int syncHandle = BASS_ChannelSetSync(this.stream, BASS_SYNC_POS | BASS_SYNC_ONETIME, bytes, callback, null);
-                if (syncHandle == 0) Log.e("LyricsPlayer.Lyrics", "BASS Error code = " + BASS_ErrorGetCode());
+                final int syncHandle = BASS_ChannelSetSync(this.stream, BASS_SYNC_POS, bytes, callback, null);
+                if (syncHandle == 0) Log.e(TAG, "BASS Error code = " + BASS_ErrorGetCode());
             }
         }
     }
