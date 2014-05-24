@@ -181,7 +181,7 @@ public class PlayerActivity extends Activity {
             public void onClick(View view) {
                 BrowserDialog bd = new BrowserDialog();
                 bd.setBrowseMode(BrowserDialog.MODE_OPEN_FILE)
-                        .setExtensionFilter("mp3;wma;ogg;wav");
+                        .setExtensionFilter("mp3;wma;ogg;wav;aac");
 
                 String startPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC).getAbsolutePath();
                 bd.setStartPath(startPath);
@@ -200,6 +200,7 @@ public class PlayerActivity extends Activity {
                     public void onNegativeResult() {
                     }
                 });
+                bd.setStartIsRoot(false);
                 bd.show(getFragmentManager(), BrowserDialog.TAG);
             }
         });
@@ -314,6 +315,10 @@ public class PlayerActivity extends Activity {
 
             editor.putString(PREF_LASTSONG, path);
             editor.apply();
+
+            //create lyrics dir
+            File cacheDir = new File(Environment.getExternalStorageDirectory().getPath() + File.separator + Lyrics.LRC_CACHE_DIR);
+            if (!cacheDir.exists()) cacheDir.mkdirs();
 
             //try load lyrics from cache
             File lrcFile = new File(currentSong.getLRCPath());

@@ -92,8 +92,6 @@ public class LyricsDownloaderTask extends AsyncTask<String, String, Lyrics> {
                                 Log.e(TAG, "File write failed: " + e.toString());
                             }
 
-                            //TODO: cache file on sdcard
-
                             publishProgress(null, null, context.getString(R.string.player_downloadinglyrics));
                             return new Lyrics(result);
                         }
