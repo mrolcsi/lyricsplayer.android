@@ -205,7 +205,6 @@ public class BrowserActivity extends Activity {
      */
     @SuppressWarnings("WeakerAccess")
     public static final String OPTION_LAYOUT;
-
     static {
         OPTION_START_IS_ROOT = "startIsRoot";
         OPTION_DEFAULT_FILENAME = "defaultFileName";
@@ -216,7 +215,6 @@ public class BrowserActivity extends Activity {
         OPTION_BROWSE_MODE = "browseMode";
         OPTION_LAYOUT = "layout";
     }
-
     //</editor-fold>
     //<editor-fold desc="Privates">
     private static final int ERROR_FOLDER_NOT_READABLE = -394829994;
@@ -333,7 +331,7 @@ public class BrowserActivity extends Activity {
                     break;
                 case MODE_SAVE_FILE:
                     actionBar.setTitle(R.string.browser_titleSaveFile);
-                    actionBar.setIcon(R.drawable.browser_save);
+                    actionBar.setIcon(R.drawable.browser_save_title);
                     break;
             }
             actionBar.setDisplayHomeAsUpEnabled(true);

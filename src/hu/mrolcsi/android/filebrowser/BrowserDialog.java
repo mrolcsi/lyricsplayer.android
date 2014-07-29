@@ -181,7 +181,6 @@ public class BrowserDialog extends DialogFragment {
      * Alapértelmezett: lista.
      */
     public static final String OPTION_LAYOUT;
-
     static {
         OPTION_START_IS_ROOT = "startIsRoot";
         OPTION_DEFAULT_FILENAME = "defaultFileName";
@@ -192,7 +191,6 @@ public class BrowserDialog extends DialogFragment {
         OPTION_BROWSE_MODE = "browseMode";
         OPTION_LAYOUT = "layout";
     }
-
     public static final String TAG = "hu.mrolcsi.android.filebrowser.browserdialog";
     //</editor-fold>
     //<editor-fold desc="Privates">
@@ -304,7 +302,7 @@ public class BrowserDialog extends DialogFragment {
         btnSortMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: implement method
+                showSortDialog();
             }
         });
 
@@ -312,7 +310,7 @@ public class BrowserDialog extends DialogFragment {
         btnNewFolder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: implement method
+                showNewFolderDialog();
             }
         });
 
@@ -483,7 +481,7 @@ public class BrowserDialog extends DialogFragment {
                         FileHolder holder = (FileHolder) view.getTag();
                         if (!holder.file.isFile()) return false;
                         else {
-                            //showOverwriteDialog(holder.file.getAbsolutePath());
+                            showOverwriteDialog(holder.file.getAbsolutePath());
                             Toast.makeText(getActivity(), "Press Save button twice to overwrite file.", Toast.LENGTH_LONG).show();
                             return true;
                         }
@@ -577,25 +575,56 @@ public class BrowserDialog extends DialogFragment {
      * @param fileName fájlnév
      */
     private void showOverwriteDialog(final String fileName) {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
-//                .setIcon(android.R.drawable.ic_dialog_alert)
-//                .setMessage(R.string.browser_fileExists_message)
-//                .setTitle(R.string.browser_fileExists_title)
-//                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialogInterface, int i) {
-//                        onDialogResultListener.onPositiveResult(fileName);
-//                        dismiss();
-//                    }
-//                })
-//                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-//                    @Override
-//                    public void onClick(DialogInterface dialogInterface, int i) {
-//                        dialogInterface.dismiss();
-//                    }
-//                });
-//        AlertDialog ad = builder.create();
-//        ad.show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setMessage(R.string.browser_fileExists_message)
+                .setTitle(R.string.browser_fileExists_title)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        onDialogResultListener.onPositiveResult(fileName);
+                        dismiss();
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+        AlertDialog ad = builder.create();
+        ad.show();
+    }
+
+    /**
+     * Új mappa létrehozása az aktuális mappában.
+     * WRITE_EXTERNAL_STORAGE szükséges!
+     */
+    private void showNewFolderDialog() {
+        final View view = getActivity().getLayoutInflater().inflate(R.layout.browser_dialog_newfolder, null);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                .setTitle(R.string.browser_menu_newFolder)
+                .setIcon(R.drawable.browser_new_folder).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        EditText etFolderName = (EditText) view.findViewById(R.id.browser_etNewFolder);
+                        if (Utils.isFilenameValid(etFolderName.getText().toString())) {
+                            File newDir = new File(currentPath + "/" + etFolderName.getText());
+                            if (newDir.mkdir()) {
+                                loadList(new File(currentPath));
+                            } else showErrorDialog(ERROR_CANT_CREATE_FOLDER);
+                        } else showErrorDialog(ERROR_INVALID_FOLDERNAME);
+                    }
+                })
+                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                })
+                .setView(view);
+        AlertDialog ad = builder.create();
+        ad.show();
     }
 
     /**
@@ -604,31 +633,31 @@ public class BrowserDialog extends DialogFragment {
      * @param error a hiba oka
      */
     private void showErrorDialog(int error) {
-        //AlertDialog.Builder builder = null;
+        AlertDialog.Builder builder = null;
         switch (error) {
             case ERROR_CANT_CREATE_FOLDER:
-//                builder = new AlertDialog.Builder(getActivity())
-//                        .setIcon(android.R.drawable.ic_dialog_alert)
-//                        .setMessage(R.string.browser_error_cantCreateFolder_message)
-//                        .setTitle(R.string.browser_error_cantCreateFolder_title)
-//                        .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialogInterface, int i) {
-//                            }
-//                        });
-                Toast.makeText(getActivity(), R.string.browser_error_cantCreateFolder_message, Toast.LENGTH_LONG).show();
+                builder = new AlertDialog.Builder(getActivity())
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setMessage(R.string.browser_error_cantCreateFolder_message)
+                        .setTitle(R.string.browser_error_cantCreateFolder_title)
+                        .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                            }
+                        });
+//                Toast.makeText(getActivity(), R.string.browser_error_cantCreateFolder_message, Toast.LENGTH_LONG).show();
                 break;
             case ERROR_FOLDER_NOT_READABLE:
-//                builder = new AlertDialog.Builder(getActivity())
-//                        .setIcon(android.R.drawable.ic_dialog_alert)
-//                        .setMessage(R.string.browser_error_folderCantBeOpened_message)
-//                        .setTitle(R.string.browser_error_folderCantBeOpened_title)
-//                        .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialogInterface, int i) {
-//                            }
-//                        });
-                Toast.makeText(getActivity(), R.string.browser_error_folderCantBeOpened_message, Toast.LENGTH_LONG).show();
+                builder = new AlertDialog.Builder(getActivity())
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setMessage(R.string.browser_error_folderCantBeOpened_message)
+                        .setTitle(R.string.browser_error_folderCantBeOpened_title)
+                        .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                            }
+                        });
+//                Toast.makeText(getActivity(), R.string.browser_error_folderCantBeOpened_message, Toast.LENGTH_LONG).show();
                 break;
             case ERROR_INVALID_FILENAME:
 //                builder = new AlertDialog.Builder(getActivity())
@@ -640,22 +669,27 @@ public class BrowserDialog extends DialogFragment {
 //                            public void onClick(DialogInterface dialogInterface, int i) {
 //                            }
 //                        });
-                Toast.makeText(getActivity(), R.string.browser_error_invalidFilename_message, Toast.LENGTH_LONG).show();
+//                Toast.makeText(getActivity(), R.string.browser_error_invalidFilename_message, Toast.LENGTH_LONG).show();
                 break;
             case ERROR_INVALID_FOLDERNAME:
-//                builder = new AlertDialog.Builder(getActivity())
-//                        .setIcon(android.R.drawable.ic_dialog_alert)
-//                        .setMessage(R.string.browser_error_invalidFolderName_message)
-//                        .setTitle(R.string.browser_error_invalidFolderName_title)
-//                        .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialogInterface, int i) {
-//                            }
-//                        });
-                Toast.makeText(getActivity(), R.string.browser_error_invalidFolderName_message, Toast.LENGTH_LONG).show();
+                builder = new AlertDialog.Builder(getActivity())
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setMessage(R.string.browser_error_invalidFolderName_message)
+                        .setTitle(R.string.browser_error_invalidFolderName_title)
+                        .setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                            }
+                        });
+//                Toast.makeText(getActivity(), R.string.browser_error_invalidFolderName_message, Toast.LENGTH_LONG).show();
                 break;
             default:
                 break;
+        }
+
+        AlertDialog ad = builder != null ? builder.create() : null;
+        if (ad != null) {
+            ad.show();
         }
     }
 

@@ -84,7 +84,6 @@ public class PlayerActivity extends Activity {
 
     private Song currentSong;
     private SharedPreferences sharedPrefs;
-    private SharedPreferences.Editor editor;
     private ImageButton btnPlayPause;
     private ImageView imgCover;
     private ImageButton btnOpen;
@@ -108,7 +107,6 @@ public class PlayerActivity extends Activity {
 
         setContentView(R.layout.player_main);
         sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        editor = sharedPrefs.edit();
 
         initViews();
         initListeners();
@@ -313,12 +311,11 @@ public class PlayerActivity extends Activity {
             tvElapsedTime.setText(currentSong.getElapsedTimeString());
             tvRemainingTime.setText(currentSong.getRemainingTimeString());
 
-            editor.putString(PREF_LASTSONG, path);
-            editor.apply();
+            sharedPrefs.edit().putString(PREF_LASTSONG, path).apply();
 
             //create lyrics dir
-            File cacheDir = new File(Environment.getExternalStorageDirectory().getPath() + File.separator + Lyrics.LRC_CACHE_DIR);
-            if (!cacheDir.exists()) cacheDir.mkdirs();
+            File lyricsDir = new File(Environment.getExternalStorageDirectory().getPath() + File.separator + Lyrics.LRC_CACHE_DIR);
+            if (!lyricsDir.exists()) lyricsDir.mkdirs();
 
             //try load lyrics from cache
             File lrcFile = new File(currentSong.getLRCPath());
