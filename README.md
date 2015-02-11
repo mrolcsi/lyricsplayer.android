@@ -26,4 +26,4 @@ A simple MP3 player with the capability of downloading lyrics in LRC format, and
 
   [1]: http://en.wikipedia.org/wiki/LRC_(file_format)
   [2]: http://www.crintsoft.com/
-  [3]: http://mrolcsi.orgfree.com/lrc
+  [3]: http://users.atw.hu/mrolcsi/lrc
