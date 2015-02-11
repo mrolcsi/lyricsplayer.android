@@ -28,7 +28,7 @@ import java.net.ConnectException;
 public class LyricsDownloaderTask extends AsyncTask<String, String, Lyrics> {
 
     public static final String TAG = "LyricsPlayer.Downloader";
-    private static final String BASE_URL = "http://user.atw.hu/mrolcsi/lrc/get.php";
+    private static final String BASE_URL = "http://users.atw.hu/mrolcsi/lrc/get.php";
     private final Context context;
 
     public LyricsDownloaderTask(Context context) {
