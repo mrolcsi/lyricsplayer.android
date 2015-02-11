@@ -34,7 +34,7 @@ public class Song {
 
     private AudioFile audioFile;
 
-    private int stream;
+    private int stream = 0;
     private SYNCPROC onSongEnd = new SYNCPROC() {
         @Override
         public void SYNCPROC(int handle, int channel, int data, Object user) {
@@ -44,7 +44,7 @@ public class Song {
     };
 
     private Lyrics lyrics;
-    private OnLyricsReached onLyricsReached;
+    private OnLineReached onLineReached;
 
     //region Constructor
 
@@ -58,6 +58,13 @@ public class Song {
     //endregion
 
     //region Properties
+
+    public static String getTimeString(double seconds) {
+        int minutes = (int) (seconds / 60);
+        seconds = seconds % 60;
+
+        return String.format(TIME_FORMAT, minutes, (int) seconds);
+    }
 
     public double getTotalTimeSeconds() {
         return BASS_ChannelBytes2Seconds(this.stream, BASS_ChannelGetLength(this.stream, BASS_POS_BYTE));
@@ -84,27 +91,15 @@ public class Song {
     }
 
     public String getTotalTimeString() {
-        int seconds = (int) this.getTotalTimeSeconds();
-        int minutes = seconds / 60;
-        seconds = seconds % 60;
-
-        return String.format(TIME_FORMAT, minutes, seconds);
+        return getTimeString(getTotalTimeSeconds());
     }
 
     public String getElapsedTimeString() {
-        int seconds = (int) this.getElapsedTimeSeconds();
-        int minutes = seconds / 60;
-        seconds = seconds % 60;
-
-        return String.format(TIME_FORMAT, minutes, seconds);
+        return getTimeString(getElapsedTimeSeconds());
     }
 
     public String getRemainingTimeString() {
-        int seconds = (int) this.getRemainingTimeSeconds();
-        int minutes = seconds / 60;
-        seconds = seconds % 60;
-
-        return String.format("-" + TIME_FORMAT, minutes, seconds);
+        return "-" + getTimeString(getRemainingTimeSeconds());
     }
 
     public int getStatus() {
@@ -132,33 +127,34 @@ public class Song {
         return BitmapFactory.decodeByteArray(binaryData, 0, binaryData.length);
     }
 
-    public void setLyrics(Lyrics lyrics, OnLyricsReached onLyricsReached) {
-        if (onLyricsReached == null) {
-            onLyricsReached = new OnLyricsReached() {
+    public void setLyrics(Lyrics lyrics, OnLineReached onLineReached) {
+        if (onLineReached == null) {
+            onLineReached = new OnLineReached() {
                 @Override
                 public void onLyricsReached(String currentLine, String previousLine, String nextLine) {
                     // do nothing
                 }
             };
         }
-        if (this.onLyricsReached == null) {
-            this.onLyricsReached = onLyricsReached;
+        if (this.onLineReached == null) {
+            this.onLineReached = onLineReached;
         }
 
         this.lyrics = lyrics;
-    }
-
-    public Lyrics getLyrics() {
-        return lyrics;
     }
 
 //endregion
 
 //region Playback Control
 
+    public Lyrics getLyrics() {
+        return lyrics;
+    }
+
     public void stop() {
         BASS_ChannelStop(this.stream);
         BASS_SampleFree(this.stream);
+        this.stream = 0;
     }
 
     public void play() {
@@ -168,7 +164,7 @@ public class Song {
 
         buildLyricsCallbacks();
 
-        BASS_ChannelPlay(stream, true);
+        //BASS_ChannelPlay(stream, true);
     }
 
     public void buildLyricsCallbacks() {
@@ -181,7 +177,7 @@ public class Song {
                 SYNCPROC callback = new SYNCPROC() {
                     @Override
                     public void SYNCPROC(int handle, int channel, int data, Object user) {
-                        onLyricsReached.onLyricsReached(allLyrics.get(currentLine).getLyric(), currentLine - 1 >= 0 ? allLyrics.get(currentLine - 1).getLyric() : "", currentLine + 1 < allLyrics.size() ? allLyrics.get(currentLine + 1).getLyric() : "");
+                        onLineReached.onLyricsReached(allLyrics.get(currentLine).getLyric(), currentLine - 1 >= 0 ? allLyrics.get(currentLine - 1).getLyric() : "", currentLine + 1 < allLyrics.size() ? allLyrics.get(currentLine + 1).getLyric() : "");
                     }
                 };
 
@@ -200,6 +196,7 @@ public class Song {
     }
 
     public void resume(double seconds) {
+        if (this.stream == 0) play();
         final long bytes = BASS_ChannelSeconds2Bytes(this.stream, seconds);
         BASS_ChannelSetPosition(this.stream, bytes, BASS_POS_BYTE);
         BASS_ChannelPlay(stream, false);
@@ -217,13 +214,12 @@ public class Song {
     public String getPath() {
         return filePath;
     }
+    //endregion
 
     public String getLRCPath() {
         File f = new File(filePath);
         return Environment.getExternalStorageDirectory().getPath() + File.separator + Lyrics.LRC_CACHE_DIR + File.separator + f.getName() + Lyrics.LRC_EXTENSION;
     }
-    //endregion
-
 
     @Override
     public String toString() {

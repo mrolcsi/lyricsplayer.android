@@ -21,4 +21,6 @@
     <string name="downloader_error">Error</string>
     <string name="downloader_error_nolyricsfound">No lyrics found.</string>
     <string name="editor_delete">Delete</string>
+    <string name="downloader_error_couldntconnect">Couldn\'t connect to server.</string>
+    <string name="downloader_error_tryagainlater">Try again later.</string>
 </resources>

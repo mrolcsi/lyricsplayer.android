@@ -1,176 +1,180 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <ImageView
+        android:id="@+id/imgCover"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/imgCover"
-        android:src="@drawable/player_nocover"
-        android:layout_above="@+id/tvTitle"
         android:layout_alignParentTop="true"
         android:layout_marginBottom="@dimen/margin_medium"
         android:adjustViewBounds="true"
-        android:scaleType="fitXY"/>
+        android:scaleType="fitCenter"
+        android:src="@drawable/player_nocover" />
 
     <RelativeLayout
+        android:id="@+id/rlLyrics"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/rlLyrics"
-        android:layout_alignTop="@+id/imgCover"
         android:layout_alignBottom="@+id/imgCover"
+        android:layout_alignTop="@+id/imgCover"
         android:layout_margin="@dimen/margin_medium">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Previous Line"
             android:id="@+id/tvTopLine"
-            android:layout_centerHorizontal="true"
-            android:textColor="@android:color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_above="@+id/tvMiddleLine"
-            android:background="@color/lyrics_background"
-            android:padding="@dimen/margin_medium"
-            android:alpha="0.6"
-            android:gravity="center_horizontal"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Current Line"
-            android:id="@+id/tvMiddleLine"
-            android:layout_centerInParent="true"
-            android:textColor="@android:color/white"
-            android:background="@color/lyrics_background"
-            android:padding="@dimen/margin_medium"
-            android:gravity="center_horizontal"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Next Line"
-            android:id="@+id/tvBottomLine"
             android:layout_centerHorizontal="true"
-            android:textColor="@android:color/white"
-            android:layout_below="@+id/tvMiddleLine"
-            android:background="@color/lyrics_background"
-            android:padding="@dimen/margin_medium"
             android:alpha="0.6"
-            android:gravity="center_horizontal"/>
+            android:background="@color/lyrics_background"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/margin_medium"
+            android:text="Previous Line"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/tvMiddleLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@color/lyrics_background"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/margin_medium"
+            android:text="Current Line"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/tvBottomLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvMiddleLine"
+            android:layout_centerHorizontal="true"
+            android:alpha="0.6"
+            android:background="@color/lyrics_background"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/margin_medium"
+            android:text="Next Line"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/white" />
     </RelativeLayout>
 
-    <TextView
-        android:layout_width="fill_parent"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Title"
-        android:id="@+id/tvTitle"
-        android:textStyle="bold"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:layout_above="@+id/tvArtistAlbum"
-        android:maxLines="2"
-        android:ellipsize="marquee"
-        android:layout_marginLeft="@dimen/margin_medium"
-        android:layout_marginRight="@dimen/margin_medium"/>
-
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Artist - Album"
-        android:id="@+id/tvArtistAlbum"
-        android:layout_gravity="center"
-        android:layout_weight="1"
-        android:gravity="center"
         android:layout_above="@+id/btnPlayPause"
-        android:layout_centerHorizontal="true"
-        android:maxLines="2"
-        android:ellipsize="marquee"
-        android:layout_marginLeft="@dimen/margin_medium"
-        android:layout_marginRight="@dimen/margin_medium"/>
+        android:layout_below="@+id/imgCover"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_marginRight="@dimen/margin_medium"
+            android:layout_weight="1"
+            android:ellipsize="marquee"
+            android:gravity="center"
+            android:maxLines="2"
+            android:text="Title"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvArtistAlbum"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/margin_medium"
+            android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_marginRight="@dimen/margin_medium"
+            android:layout_weight="1"
+            android:ellipsize="marquee"
+            android:gravity="center"
+            android:maxLines="2"
+            android:text="Artist - Album"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+
 
     <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/btnOpen"
-        android:layout_alignParentLeft="true"
-        android:src="@drawable/player_open"
-        android:layout_margin="@dimen/margin_medium"
-        android:layout_above="@+id/tvElapsedTime"/>
-
-    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/tvElapsedTime"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="@dimen/margin_medium"
+        android:src="@drawable/player_open" />
+
+    <ImageButton
         android:id="@+id/btnEditLyrics"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tvRemainingTime"
         android:layout_alignParentLeft="false"
-        android:src="@drawable/editor_edit"
+        android:layout_alignParentRight="true"
         android:layout_margin="@dimen/margin_medium"
         android:clickable="false"
-        android:layout_alignParentRight="true"
-        android:layout_above="@+id/tvRemainingTime"/>
+        android:src="@drawable/editor_edit" />
 
     <ImageButton
+        android:id="@+id/btnPrev"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/btnPrev"
-        android:layout_margin="@dimen/margin_medium"
         android:layout_above="@+id/sbProgress"
+        android:layout_margin="@dimen/margin_medium"
         android:layout_toLeftOf="@+id/btnPlayPause"
         android:src="@drawable/player_prev"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/btnPlayPause"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@+id/sbProgress"
-        android:src="@drawable/player_play"
-        />
-
-    <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/btnNext"
-        android:layout_margin="@dimen/margin_medium"
         android:layout_above="@+id/sbProgress"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/player_play" />
+
+    <ImageButton
+        android:id="@+id/btnNext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/sbProgress"
+        android:layout_margin="@dimen/margin_medium"
         android:layout_toRightOf="@+id/btnPlayPause"
         android:src="@drawable/player_next"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="00:00"
         android:id="@+id/tvElapsedTime"
-        android:layout_alignParentLeft="true"
-        android:layout_above="@+id/sbProgress"
-        android:layout_marginLeft="@dimen/margin_medium"/>
-
-    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="-99:99"
-        android:id="@+id/tvRemainingTime"
-        android:layout_marginRight="@dimen/margin_medium"
         android:layout_above="@+id/sbProgress"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="@dimen/margin_medium"
+        android:text="00:00"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/tvRemainingTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/sbProgress"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/margin_medium"
+        android:text="-99:99"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <SeekBar
+        android:id="@+id/sbProgress"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/sbProgress"
         android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/margin_medium"/>
+        android:layout_margin="@dimen/margin_medium" />
 
 </RelativeLayout>

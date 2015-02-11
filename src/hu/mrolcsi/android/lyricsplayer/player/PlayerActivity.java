@@ -12,6 +12,7 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -21,7 +22,7 @@ import hu.mrolcsi.android.filebrowser.BrowserDialog;
 import hu.mrolcsi.android.lyricsplayer.R;
 import hu.mrolcsi.android.lyricsplayer.editor.EditorActivity;
 import hu.mrolcsi.android.lyricsplayer.media.Lyrics;
-import hu.mrolcsi.android.lyricsplayer.media.OnLyricsReached;
+import hu.mrolcsi.android.lyricsplayer.media.OnLineReached;
 import hu.mrolcsi.android.lyricsplayer.media.Song;
 import hu.mrolcsi.android.lyricsplayer.net.LyricsDownloaderTask;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
@@ -44,6 +45,18 @@ public class PlayerActivity extends Activity {
     private static final String TAG = "LyricsPlayer.Player";
     private static final String PREF_LASTSONG = "LyricsPlayer.lastSong";
     Handler timerHandler = new Handler();
+    private Song currentSong;
+    private SharedPreferences sharedPrefs;
+    private ImageButton btnPlayPause;
+    private ImageView imgCover;
+    private ImageButton btnOpen;
+    private ImageButton btnPrev;
+    private ImageButton btnNext;
+    private TextView tvTitle;
+    private TextView tvArtistAlbum;
+    private TextView tvElapsedTime;
+    private TextView tvRemainingTime;
+    private SeekBar sbProgress;
     Runnable timerRunnable = new Runnable() {
         //To start handler, call:
         //timerHandler.postDelayed(timerRunnable, 0);
@@ -62,7 +75,6 @@ public class PlayerActivity extends Activity {
             timerHandler.postDelayed(this, 500);
         }
     };
-
     private BASS.SYNCPROC onSongEnd = new BASS.SYNCPROC() {
         @Override
         public void SYNCPROC(int handle, int channel, int data, Object user) {
@@ -81,19 +93,6 @@ public class PlayerActivity extends Activity {
             });
         }
     };
-
-    private Song currentSong;
-    private SharedPreferences sharedPrefs;
-    private ImageButton btnPlayPause;
-    private ImageView imgCover;
-    private ImageButton btnOpen;
-    private ImageButton btnPrev;
-    private ImageButton btnNext;
-    private TextView tvTitle;
-    private TextView tvArtistAlbum;
-    private TextView tvElapsedTime;
-    private TextView tvRemainingTime;
-    private SeekBar sbProgress;
     private TextView tvTopLine;
     private TextView tvMiddleLine;
     private TextView tvBottomLine;
@@ -161,6 +160,9 @@ public class PlayerActivity extends Activity {
         btnNext = (ImageButton) findViewById(R.id.btnNext);
 
         imgCover = (ImageView) findViewById(R.id.imgCover);
+        final ViewTreeObserver viewTreeObserver = imgCover.getViewTreeObserver();
+
+
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvArtistAlbum = (TextView) findViewById(R.id.tvArtistAlbum);
 
@@ -208,15 +210,8 @@ public class PlayerActivity extends Activity {
             public void onClick(View view) {
                 if (currentSong != null) {
                     final int status = currentSong.getStatus();
-                    if (status == BASS.BASS_ACTIVE_PAUSED) {
+                    if (status == BASS.BASS_ACTIVE_PAUSED || status == BASS.BASS_ACTIVE_STOPPED) {
                         currentSong.resume(sbProgress.getProgress());
-                        timerHandler.postDelayed(timerRunnable, 0);
-
-                        btnPlayPause.setImageResource(R.drawable.player_pause);
-
-                        getWindow().addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-                    } else if (status == BASS.BASS_ACTIVE_STOPPED) {
-                        currentSong.play();
                         timerHandler.postDelayed(timerRunnable, 0);
 
                         btnPlayPause.setImageResource(R.drawable.player_pause);
@@ -238,8 +233,15 @@ public class PlayerActivity extends Activity {
         sbProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                if (b && currentSong != null && currentSong.getStatus() == BASS.BASS_ACTIVE_PLAYING) {
-                    currentSong.seekSeconds(i);
+                if (b) {
+                    if (currentSong != null) {
+                        if (currentSong.getStatus() == BASS.BASS_ACTIVE_PLAYING) {
+                            currentSong.seekSeconds(i);
+                        } else {
+                            tvElapsedTime.setText(Song.getTimeString(i));
+                            tvRemainingTime.setText("-" + Song.getTimeString(seekBar.getMax() - i));
+                        }
+                    }
                 }
             }
 
@@ -396,7 +398,7 @@ public class PlayerActivity extends Activity {
         tvMiddleLine.setText(R.string.player_lyricsdownloaded);
         tvBottomLine.setText(R.string.player_enjoy);
 
-        OnLyricsReached onLyricsReached = new OnLyricsReached() {
+        OnLineReached onLineReached = new OnLineReached() {
             @Override
             public void onLyricsReached(final String currentLine, final String previousLine, final String nextLine) {
                 runOnUiThread(new Runnable() {
@@ -410,6 +412,6 @@ public class PlayerActivity extends Activity {
 
             }
         };
-        currentSong.setLyrics(lyrics, onLyricsReached);
+        currentSong.setLyrics(lyrics, onLineReached);
     }
 }

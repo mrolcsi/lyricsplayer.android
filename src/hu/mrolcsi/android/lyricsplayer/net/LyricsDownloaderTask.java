@@ -16,6 +16,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.*;
+import java.net.ConnectException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -84,14 +85,15 @@ public class LyricsDownloaderTask extends AsyncTask<String, String, Lyrics> {
                             // now you have the string representation of the HTML request
                             inStream.close();
 
-                            try {
-                                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new FileOutputStream(strings[2]));
-                                outputStreamWriter.write(result);
-                                outputStreamWriter.close();
-                            } catch (IOException e) {
-                                Log.e(TAG, "File write failed: " + e.toString());
+                            if (result.startsWith("<html>")) {
+                                //not the actual lyrics, something else
+                                strings[2] += ".bad";
+                                writeToFile(result, strings[2]);
+                                publishProgress(context.getString(R.string.downloader_error), null, context.getString(R.string.downloader_error_nolyricsfound));
+                                cancel(true);
                             }
 
+                            writeToFile(result, strings[2]);
                             publishProgress(null, null, context.getString(R.string.player_downloadinglyrics));
                             return new Lyrics(result);
                         }
@@ -105,6 +107,8 @@ public class LyricsDownloaderTask extends AsyncTask<String, String, Lyrics> {
                 }
             } catch (ClientProtocolException e) {
                 Log.w(TAG, e);
+            } catch (ConnectException e) {
+                publishProgress(context.getString(R.string.downloader_error), context.getString(R.string.downloader_error_couldntconnect), context.getString(R.string.downloader_error_tryagainlater));
             } catch (IOException e) {
                 Log.w(TAG, e);
             }
@@ -117,6 +121,16 @@ public class LyricsDownloaderTask extends AsyncTask<String, String, Lyrics> {
 
 
         return null;
+    }
+
+    private void writeToFile(String data, String filename) {
+        try {
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new FileOutputStream(filename));
+            outputStreamWriter.write(data);
+            outputStreamWriter.close();
+        } catch (IOException e) {
+            Log.e(TAG, "File write failed: " + e.toString());
+        }
     }
 
     private String convertStreamToString(InputStream is) {
