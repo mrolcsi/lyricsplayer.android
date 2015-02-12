@@ -210,8 +210,15 @@ public class PlayerActivity extends Activity {
             public void onClick(View view) {
                 if (currentSong != null) {
                     final int status = currentSong.getStatus();
-                    if (status == BASS.BASS_ACTIVE_PAUSED || status == BASS.BASS_ACTIVE_STOPPED) {
+                    if (status == BASS.BASS_ACTIVE_PAUSED) {
                         currentSong.resume(sbProgress.getProgress());
+                        timerHandler.postDelayed(timerRunnable, 0);
+
+                        btnPlayPause.setImageResource(R.drawable.player_pause);
+
+                        getWindow().addFlags(android.view.WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+                    } else if (status == BASS.BASS_ACTIVE_STOPPED) {
+                        currentSong.play();
                         timerHandler.postDelayed(timerRunnable, 0);
 
                         btnPlayPause.setImageResource(R.drawable.player_pause);
