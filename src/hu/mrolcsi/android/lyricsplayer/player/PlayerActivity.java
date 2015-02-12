@@ -11,8 +11,8 @@ import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -97,6 +97,7 @@ public class PlayerActivity extends Activity {
     private TextView tvMiddleLine;
     private TextView tvBottomLine;
     private ImageButton btnEditLyrics;
+    private SparseArray<String> lyricsSparseArray;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -160,8 +161,6 @@ public class PlayerActivity extends Activity {
         btnNext = (ImageButton) findViewById(R.id.btnNext);
 
         imgCover = (ImageView) findViewById(R.id.imgCover);
-        final ViewTreeObserver viewTreeObserver = imgCover.getViewTreeObserver();
-
 
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         tvArtistAlbum = (TextView) findViewById(R.id.tvArtistAlbum);
@@ -237,30 +236,7 @@ public class PlayerActivity extends Activity {
             }
         });
 
-        sbProgress.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                if (b) {
-                    if (currentSong != null) {
-                        if (currentSong.getStatus() == BASS.BASS_ACTIVE_PLAYING) {
-                            currentSong.seekSeconds(i);
-                        } else {
-                            tvElapsedTime.setText(Song.getTimeString(i));
-                            tvRemainingTime.setText("-" + Song.getTimeString(seekBar.getMax() - i));
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                // show little time dialog like in walkman?
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            }
-        });
+        sbProgress.setOnSeekBarChangeListener(new SeekBarChangeListener());
 
         btnEditLyrics.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -420,5 +396,41 @@ public class PlayerActivity extends Activity {
             }
         };
         currentSong.setLyrics(lyrics, onLineReached);
+        lyricsSparseArray = lyrics.getLyricsSparseArray();
+    }
+
+    private class SeekBarChangeListener implements SeekBar.OnSeekBarChangeListener {
+
+        private int currentLineIndex = 0;
+
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+            if (b) {
+                if (currentSong != null) {
+                    if (currentSong.getStatus() == BASS.BASS_ACTIVE_PLAYING) {
+                        currentSong.seekSeconds(i);
+                    } else {
+                        tvElapsedTime.setText(Song.getTimeString(i));
+                        tvRemainingTime.setText("-" + Song.getTimeString(seekBar.getMax() - i));
+                    }
+
+                    currentLineIndex = lyricsSparseArray.indexOfKey(i);
+                    if (currentLineIndex > 0) {
+                        tvTopLine.setText(lyricsSparseArray.valueAt(currentLineIndex - 1));
+                        tvMiddleLine.setText(lyricsSparseArray.valueAt(currentLineIndex));
+                        tvBottomLine.setText(lyricsSparseArray.valueAt(currentLineIndex + 1));
+                    }
+                }
+            }
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+            // show little time dialog like in walkman?
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+        }
     }
 }

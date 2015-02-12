@@ -50,7 +50,7 @@ public class LRCAdapter extends ArrayAdapter<LyricLine> {
             inputStream.close();
             lrcString = stringBuilder.toString();
             Lyrics lrc = new Lyrics(lrcString);
-            lyrics = lrc.getAllLyrics();
+            lyrics = lrc.getLineList();
         } catch (FileNotFoundException e) {
             Log.e(TAG, "File not found: " + e.toString());
         } catch (IOException e) {

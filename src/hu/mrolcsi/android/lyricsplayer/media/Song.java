@@ -168,7 +168,7 @@ public class Song {
 
     public void buildLyricsCallbacks() {
         if (lyrics != null) {
-            final List<LyricLine> allLyrics = lyrics.getAllLyrics();
+            final List<LyricLine> allLyrics = lyrics.getLineList();
             for (int i = 0; i < allLyrics.size(); i++) {
                 final long bytes = BASS_ChannelSeconds2Bytes(this.stream, allLyrics.get(i).getTime());
 

@@ -1,5 +1,7 @@
 package hu.mrolcsi.android.lyricsplayer.media;
 
+import android.util.SparseArray;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -22,7 +24,8 @@ public class Lyrics {
     private static final String LRC_LINE_REGEXP = "\\[([0-9\\.:]+)](.*)";
     private static final String LRC_TIME_LONG_REGEXP = "^([0-9]{2}):([0-9]{2})\\.([0-9]{2})$";
     private static final String LRC_TIME_SHORT_REGEXP = "^([0-9]{2}):([0-9]{2})$";
-    private List<LyricLine> lyrics;
+    private List<LyricLine> lyricsList;
+    private SparseArray<String> lyricsSparseArray;
     private double offset;
 
     public Lyrics(String lrc) {
@@ -34,14 +37,16 @@ public class Lyrics {
         Pattern offsetPattern = Pattern.compile("\\[offset: ([-0-9]+)].*");
 
         //get lines with valid tag
-        lyrics = new ArrayList<LyricLine>();
+        lyricsList = new ArrayList<LyricLine>();
+        lyricsSparseArray = new SparseArray<String>();
 
         Pattern linePattern = Pattern.compile(LRC_LINE_REGEXP);
         for (String line : split) {
             Matcher lineMatcher = linePattern.matcher(line);
 
             if (lineMatcher.matches()) {
-                lyrics.add(new LyricLine(getSecondsFromTag(lineMatcher.group(1)), lineMatcher.group(2)));
+                lyricsList.add(new LyricLine(getSecondsFromTag(lineMatcher.group(1)), lineMatcher.group(2)));
+                lyricsSparseArray.put((int) (getSecondsFromTag(lineMatcher.group(1))), lineMatcher.group(2));
             }
 
             Matcher offsetMatcher = offsetPattern.matcher(line);
@@ -50,7 +55,7 @@ public class Lyrics {
                 offset = Double.parseDouble(offsetMatcher.group(1)) / 1000d;
             }
         }
-        Collections.sort(lyrics, LyricLine.COMPARATOR);
+        Collections.sort(lyricsList, LyricLine.COMPARATOR);
     }
 
     private static double getSecondsFromTag(String tag) {
@@ -70,8 +75,12 @@ public class Lyrics {
 
     }
 
-    public List<LyricLine> getAllLyrics() {
-        return lyrics;
+    public List<LyricLine> getLineList() {
+        return lyricsList;
+    }
+
+    public SparseArray<String> getLyricsSparseArray() {
+        return lyricsSparseArray;
     }
 
     //    public String getCurrentLine() {
