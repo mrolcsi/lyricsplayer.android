@@ -50,7 +50,6 @@ public class Song {
 
     public Song(String path, SYNCPROC onSongEnd) throws TagException, ReadOnlyFileException, CannotReadException, InvalidAudioFrameException, IOException {
         this.filePath = path;
-        this.stream = BASS_StreamCreateFile(filePath, 0, 0, 0);
         this.onSongEnd = onSongEnd;
         audioFile = AudioFileIO.read(new File(this.filePath));
     }
@@ -196,7 +195,9 @@ public class Song {
     }
 
     public void resume(double seconds) {
-        if (this.stream == 0) play();
+        if (this.stream == 0) {
+            play();
+        }
         final long bytes = BASS_ChannelSeconds2Bytes(this.stream, seconds);
         BASS_ChannelSetPosition(this.stream, bytes, BASS_POS_BYTE);
         BASS_ChannelPlay(stream, false);
