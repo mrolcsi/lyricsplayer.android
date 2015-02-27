@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menuSaveLyrics"
+        android:icon="@drawable/editor_save"
+        android:showAsAction="always"
+        android:title="@string/editor_menu_save" />
+
+    <item
+        android:id="@+id/menuDelete"
+        android:icon="@drawable/editor_delete"
+        android:showAsAction="always"
+        android:title="@string/editor_delete" />
+    <item
+        android:id="@+id/menuAddLine"
+        android:icon="@drawable/editor_add"
+        android:showAsAction="always"
+        android:title="@string/editor_menu_addline" />
+</menu>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvNoLyrics"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:shadowColor="@android:color/darker_gray"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="3"
+        android:text="No lyrics." />
+
+    <ListView
+        android:id="@+id/lvLyrics"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <ImageButton
+            android:id="@+id/btnPlayPause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_margin="@dimen/margin_small"
+            android:src="@drawable/player_play" />
+
+        <HorizontalScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/sbProgress"
+            android:layout_margin="@dimen/margin_small"
+            android:layout_toLeftOf="@+id/tvTime"
+            android:layout_toRightOf="@+id/btnPlayPause">
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/editor_title_format" />
+
+        </HorizontalScrollView>
+
+        <SeekBar
+            android:id="@+id/sbProgress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/btnPlayPause"
+            android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/margin_small"
+            android:layout_toRightOf="@+id/btnPlayPause" />
+
+        <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/sbProgress"
+            android:layout_alignParentRight="true"
+            android:layout_margin="@dimen/margin_small"
+            android:text="@string/editor_time_format"
+            android:textStyle="italic" />
+    </RelativeLayout>
+</LinearLayout>

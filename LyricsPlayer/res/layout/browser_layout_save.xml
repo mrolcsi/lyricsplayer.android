@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_gravity="center"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <TextView
+        android:id="@+id/browser_labelCurrentDirectory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="@dimen/browser_margin"
+        android:text="@string/browser_currentDirectory"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/browser_textViewCurrentDir"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/browser_labelCurrentDirectory"
+        android:layout_marginBottom="@dimen/browser_margin"
+        android:layout_marginLeft="@dimen/browser_margin"
+        android:layout_marginRight="@dimen/browser_margin"
+        android:text="@string/browser_pathPlaceholder" />
+
+    <EditText
+        android:id="@+id/browser_editTextFilename"
+        style="@android:style/TextAppearance.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="@dimen/browser_margin"
+        android:layout_marginLeft="@dimen/browser_margin"
+        android:layout_marginTop="@dimen/browser_margin"
+        android:layout_toLeftOf="@+id/browser_imageButtonSave"
+        android:hint="@string/browser_filenamePlaceholder"
+        android:inputType="textNoSuggestions"
+        android:selectAllOnFocus="true"
+        android:singleLine="true" />
+
+    <ImageButton
+        android:id="@+id/browser_imageButtonSave"
+        android:layout_width="@android:dimen/app_icon_size"
+        android:layout_height="@android:dimen/app_icon_size"
+        android:layout_above="@+id/browser_viewFlipper"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/browser_margin"
+        android:layout_marginRight="@dimen/browser_margin"
+        android:contentDescription="@android:string/ok"
+        android:padding="@dimen/browser_margin"
+        android:scaleType="fitCenter"
+        android:src="@drawable/browser_save" />
+
+    <ViewFlipper
+        android:id="@+id/browser_viewFlipper"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/browser_editTextFilename"
+        android:layout_below="@+id/browser_textViewCurrentDir"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/browser_margin">
+
+        <ListView
+            android:id="@+id/browser_listView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:clickable="true"
+            android:fastScrollEnabled="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true" />
+
+        <GridView
+            android:id="@+id/browser_gridView"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:clickable="true"
+            android:columnWidth="@dimen/browser_columnWidth"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:numColumns="auto_fit"
+            android:stretchMode="columnWidth" />
+    </ViewFlipper>
+
+</RelativeLayout>

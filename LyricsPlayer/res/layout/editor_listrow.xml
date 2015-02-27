@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/tvTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="@dimen/margin_small"
+        android:paddingBottom="@dimen/margin_medium"
+        android:paddingTop="@dimen/margin_medium"
+        android:text="[00:00.00]"
+        android:textStyle="bold"
+        android:typeface="monospace" />
+
+    <TextView
+        android:id="@+id/tvText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_margin="@dimen/margin_small"
+        android:layout_weight="1"
+        android:ellipsize="marquee"
+        android:paddingBottom="@dimen/margin_medium"
+        android:paddingTop="@dimen/margin_medium"
+        android:singleLine="false"
+        android:text="asdA:SD:Asda.sd" />
+
+</LinearLayout>

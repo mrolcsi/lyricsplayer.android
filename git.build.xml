@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="git-revision">
+    <!-- Set your own path if needed -->
+    <property name="git.path">C:\Program Files (x86)\Git\bin\git.exe</property>
+    <property name="manifest.path">LyricsPlayer\AndroidManifest.xml</property>
+
+    <!-- Generate version code only. Useful if no tags are present yet. -->
+    <target name="version-code">
+        <exec executable="${git.path}" outputproperty="version.code">
+            <arg value="rev-list" />
+            <arg value="HEAD" />
+            <!--<arg value="-first-parent" />-->
+            <arg value="--count" />
+        </exec>
+        <echo>Version code: ${version.code}</echo>
+        <replaceregexp file="${manifest.path}" match='android:versionCode=".*"'
+            replace='android:versionCode="${version.code}"' />
+    </target>
+
+    <!-- Generate version code  and version name.
+         Code = number of commits in HEAD
+         Name = v[last tag].[number of commits since last tag]
+            (Assuming each tag marks a release).
+    -->
+    <target name="version-code-and-name">
+        <!-- Get last tag -->
+        <exec executable="${git.path}" outputproperty="last.tag">
+            <arg value="rev-list" />
+            <arg value="--tags" />
+            <arg value="--no-walk" />
+            <arg value="--max-count=1" />
+        </exec>
+        <exec executable="${git.path}" outputproperty="version.code">
+            <arg value="rev-list" />
+            <arg value="HEAD" />
+            <!--<arg value="-first-parent" />-->
+            <arg value="--count" />
+        </exec>
+        <exec executable="${git.path}" outputproperty="version.commits">
+            <arg value="rev-list" />
+            <arg value="${last.tag}..HEAD" />
+            <!--<arg value="-first-parent" />-->
+            <arg value="--count" />
+        </exec>
+        <echo>Version code: ${version.code}</echo>
+        <replaceregexp file="${manifest.path}" match='android:versionCode=".*"'
+            replace='android:versionCode="${version.code}"' />
+        <exec executable="${git.path}" outputproperty="version.name">
+            <arg value="describe" />
+            <arg value="--tags" />
+            <arg value="--abbrev=0" />
+        </exec>
+        <echo>Version name: v${version.name}.${version.commits}</echo>
+        <replaceregexp file="${manifest.path}" match='android:versionName=".*"'
+            replace='android:versionName="v${version.name}.${version.commits}"' />
+    </target>
+
+</project>

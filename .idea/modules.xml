@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Lyrics Player.iml" filepath="$PROJECT_DIR$/Lyrics Player.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LIB_AndroidSupportV7-AppCompat/LIB_AndroidSupportV7-AppCompat.iml" filepath="$PROJECT_DIR$/LIB_AndroidSupportV7-AppCompat/LIB_AndroidSupportV7-AppCompat.iml" />
+      <module fileurl="file://$PROJECT_DIR$/LyricsPlayer/LyricsPlayer.iml" filepath="$PROJECT_DIR$/LyricsPlayer/LyricsPlayer.iml" />
     </modules>
   </component>
 </project>
-

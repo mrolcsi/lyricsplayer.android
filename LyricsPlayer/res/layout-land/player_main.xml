@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imgCover"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tvElapsedTime"
+        android:layout_alignParentLeft="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/player_nocover" />
+
+    <ImageButton
+        android:id="@+id/btnOpen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentTop="true"
+        android:layout_margin="@dimen/margin_medium"
+        android:layout_toRightOf="@+id/imgCover"
+        android:background="@null"
+        android:src="@drawable/player_open" />
+
+    <LinearLayout
+        android:id="@+id/llPlaybackControls"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/sbProgress"
+        android:layout_toRightOf="@+id/imgCover"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/btnPrev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/sbProgress"
+            android:layout_gravity="bottom"
+            android:layout_margin="@dimen/margin_medium"
+            android:layout_toLeftOf="@+id/btnPlayPause"
+            android:layout_weight="1"
+            android:background="@null"
+            android:src="@drawable/player_prev" />
+
+        <ImageButton
+            android:id="@+id/btnPlayPause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/sbProgress"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="bottom"
+            android:layout_margin="@dimen/margin_medium"
+            android:layout_weight="1"
+            android:background="@null"
+            android:src="@drawable/player_play" />
+
+        <ImageButton
+            android:id="@+id/btnNext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/sbProgress"
+            android:layout_gravity="bottom"
+            android:layout_margin="@dimen/margin_medium"
+            android:layout_toRightOf="@+id/btnPlayPause"
+            android:layout_weight="1"
+            android:background="@null"
+            android:src="@drawable/player_next" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llMetadata"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_above="@+id/llPlaybackControls"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@+id/imgCover"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imgCover"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Title"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvArtistAlbum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Artist - Album"
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvElapsedTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/sbProgress"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="@dimen/margin_medium"
+        android:text="00:00"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <TextView
+        android:id="@+id/tvRemainingTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/sbProgress"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/margin_medium"
+        android:text="-99:99"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <SeekBar
+        android:id="@+id/sbProgress"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/margin_medium" />
+
+</RelativeLayout>

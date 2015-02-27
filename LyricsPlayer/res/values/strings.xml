@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Lyrics Player</string>
+    <string name="downloader_error">Error</string>
+    <string name="downloader_error_couldntconnect">Couldn\'t connect to server.</string>
+    <string name="downloader_error_nolyricsfound">No lyrics found.</string>
+    <string name="downloader_error_tryagainlater">Try again later.</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="editor_delete">Delete</string>
+    <string name="editor_label">LRC Editor</string>
+    <string name="editor_menu_addline">Add</string>
+    <string name="editor_menu_save">Save</string>
+    <string name="editor_time_format">%1$s / %2$s</string>
+    <string name="editor_title_format"><![CDATA[<b>%1$s</b> - %2$s]]></string>
+    <string name="player_alert_songisplaying_message">A song is currently playing.\nStop playback and open Editor?</string>
+    <string name="player_alert_songisplaying_title">Song is playing</string>
+    <string name="player_connecttointernetfirst">Connect to Internet first!</string>
+    <string name="player_downloadinglyrics">Downloading lyrics…</string>
+    <string name="player_enjoy">Enjoy!</string>
+    <string name="player_failed">Failed.</string>
+    <string name="player_fetchinglyrics">Fetching lyrics.</string>
+    <string name="player_lyricsdownloaded">Lyrics loaded.</string>
+    <string name="player_nointernetconnection">No Internet connection.</string>
+    <string name="player_pleasewait">Please wait.</string>
+    <string name="player_starttime">00:00</string>
+    <string name="player_success">Success.</string>
+</resources>

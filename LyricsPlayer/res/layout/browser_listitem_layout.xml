@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/browser_listItemIcon"
+        android:layout_width="@dimen/browser_iconSize"
+        android:layout_height="@dimen/browser_iconSize"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/browser_margin" />
+
+    <TextView
+        android:id="@+id/browser_listItemText"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/browser_margin"
+        android:layout_toLeftOf="@+id/browser_listItemExtra"
+        android:layout_toRightOf="@+id/browser_listItemIcon"
+        android:ellipsize="marquee"
+        android:gravity="center_vertical"
+        android:singleLine="false"
+        android:text="@string/browser_placeholder" />
+
+    <TextView
+        android:id="@+id/browser_listItemExtra"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical|right"
+        android:layout_marginLeft="@dimen/browser_margin"
+        android:layout_marginRight="@dimen/browser_margin"
+        android:gravity="center_vertical|right"
+        android:singleLine="false"
+        android:textStyle="italic" />
+
+</RelativeLayout>
