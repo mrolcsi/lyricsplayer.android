@@ -1,9 +1,9 @@
 package hu.mrolcsi.android.lyricsplayer.player;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
@@ -24,8 +24,9 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import com.un4seen.bass.BASS;
 import hu.mrolcsi.android.filebrowser.BrowserDialog;
+import hu.mrolcsi.android.lyricsplayer.MainActivity;
 import hu.mrolcsi.android.lyricsplayer.R;
-import hu.mrolcsi.android.lyricsplayer.editor.EditorActivity;
+import hu.mrolcsi.android.lyricsplayer.editor.EditorFragment;
 import hu.mrolcsi.android.lyricsplayer.media.Lyrics;
 import hu.mrolcsi.android.lyricsplayer.media.OnLineReached;
 import hu.mrolcsi.android.lyricsplayer.media.Song;
@@ -105,6 +106,13 @@ public class PlayerFragment extends Fragment {
     };
 
     //region L I F E C Y C L E
+
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        setHasOptionsMenu(true);
+    }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -249,9 +257,7 @@ public class PlayerFragment extends Fragment {
                     timerHandler.removeCallbacks(timerRunnable);
                     btnPlayPause.setImageResource(R.drawable.player_play);
 
-                    Intent intent = new Intent(getActivity(), EditorActivity.class);
-                    intent.putExtra(CURRENT_SONG, currentSong.getPath());
-                    startActivity(intent);
+                    openEditor();
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     builder.setTitle(R.string.player_alert_songisplaying_title)
@@ -263,9 +269,7 @@ public class PlayerFragment extends Fragment {
                                     timerHandler.removeCallbacks(timerRunnable);
                                     btnPlayPause.setImageResource(R.drawable.player_play);
 
-                                    Intent intent = new Intent(getActivity(), EditorActivity.class);
-                                    intent.putExtra(CURRENT_SONG, currentSong.getPath());
-                                    startActivity(intent);
+                                    openEditor();
                                 }
                             })
                             .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
@@ -279,6 +283,15 @@ public class PlayerFragment extends Fragment {
                 }
             }
         });
+    }
+
+    public void openEditor() {
+        Bundle args = new Bundle();
+        args.putString(CURRENT_SONG, currentSong.getPath());
+
+        Fragment editorFragment = new EditorFragment();
+        editorFragment.setArguments(args);
+        ((MainActivity) getActivity()).swapFragment(editorFragment);
     }
 
     private void loadSong(String path) {

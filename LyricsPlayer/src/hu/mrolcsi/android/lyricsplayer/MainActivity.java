@@ -104,8 +104,6 @@ public class MainActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-
         restoreFragment();
     }
 
