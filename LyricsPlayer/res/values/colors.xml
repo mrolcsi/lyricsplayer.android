@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="lyrics_background">#AA000000</color>
+    <color name="actionbar_background">#22FFFFFF</color>
+    <color name="drawer_background">#80FFFFFF</color>
 </resources>

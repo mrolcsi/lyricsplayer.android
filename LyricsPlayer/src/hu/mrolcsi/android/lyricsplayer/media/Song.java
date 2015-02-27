@@ -12,6 +12,7 @@ import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
 import org.jaudiotagger.tag.FieldKey;
 import org.jaudiotagger.tag.Tag;
 import org.jaudiotagger.tag.TagException;
+import org.jaudiotagger.tag.images.Artwork;
 
 import java.io.File;
 import java.io.IOException;
@@ -123,8 +124,17 @@ public class Song {
     }
 
     public Bitmap getCover() throws IOException {
-        final byte[] binaryData = audioFile.getTag().getFirstArtwork().getBinaryData();
+        final Artwork artwork = audioFile.getTag().getFirstArtwork();
+        if (artwork == null) return null;
+
+        final byte[] binaryData = artwork.getBinaryData();
         return BitmapFactory.decodeByteArray(binaryData, 0, binaryData.length);
+    }
+
+    public int getCoverColor() throws IOException {
+        Bitmap cover = getCover();
+        Bitmap onePixelBitmap = Bitmap.createScaledBitmap(cover, 1, 1, true);
+        return onePixelBitmap.getPixel(0, 0);
     }
 
     public void setLyrics(Lyrics lyrics, OnLineReached onLineReached) {

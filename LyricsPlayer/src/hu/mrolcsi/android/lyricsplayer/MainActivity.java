@@ -3,16 +3,16 @@ package hu.mrolcsi.android.lyricsplayer;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.ListView;
+import com.un4seen.bass.BASS;
 import hu.mrolcsi.android.lyricsplayer.player.PlayerFragment;
 
 import java.util.Stack;
@@ -31,15 +31,18 @@ public class MainActivity extends Activity {
 
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
-    private SharedPreferences sharedPrefs;
     private ListView mPlaylist;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_activity);
 
-        sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        //first of all: init BASS
+        BASS.BASS_Init(1, 44100, 0);
+
+        requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+
+        setContentView(R.layout.main_activity);
 
         initDrawer();
 
@@ -64,7 +67,6 @@ public class MainActivity extends Activity {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                //getActionBar().setTitle(getTitle());
                 invalidateOptionsMenu();
             }
         };
@@ -73,6 +75,7 @@ public class MainActivity extends Activity {
         if (getActionBar() != null) {
             getActionBar().setDisplayHomeAsUpEnabled(true);
             getActionBar().setHomeButtonEnabled(true);
+            //getActionBar().setTitle(null);
         }
     }
 
@@ -101,8 +104,6 @@ public class MainActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-
         restoreFragment();
     }
 

@@ -15,20 +15,19 @@
         android:id="@+id/left_drawer"
         android:layout_width="240dp"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:background="@android:color/background_light"
+        android:layout_gravity="start|bottom"
+        android:background="@color/drawer_background"
         android:orientation="vertical">
-
 
         <ListView
             android:id="@+id/lvPlaylist"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginTop="?android:attr/actionBarSize"
             android:choiceMode="singleChoice"
             android:divider="@android:color/darker_gray"
             android:dividerHeight="0.5dp" />
 
     </LinearLayout>
-
 
 </android.support.v4.widget.DrawerLayout>

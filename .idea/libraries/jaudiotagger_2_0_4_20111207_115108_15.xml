@@ -3,7 +3,9 @@
     <CLASSES>
       <root url="jar://$PROJECT_DIR$/LyricsPlayer/libs/jaudiotagger-2.0.4-20111207.115108-15.jar!/" />
     </CLASSES>
-    <JAVADOC />
+    <JAVADOC>
+      <root url="http://www.jthink.net/jaudiotagger/maven/apidocs/" />
+    </JAVADOC>
     <SOURCES />
   </library>
 </component>
