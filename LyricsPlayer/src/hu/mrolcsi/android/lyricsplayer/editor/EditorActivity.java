@@ -17,7 +17,7 @@ import com.un4seen.bass.BASS;
 import hu.mrolcsi.android.lyricsplayer.R;
 import hu.mrolcsi.android.lyricsplayer.media.LyricLine;
 import hu.mrolcsi.android.lyricsplayer.media.Song;
-import hu.mrolcsi.android.lyricsplayer.player.PlayerActivity;
+import hu.mrolcsi.android.lyricsplayer.player.PlayerFragment;
 import org.jaudiotagger.audio.exceptions.CannotReadException;
 import org.jaudiotagger.audio.exceptions.InvalidAudioFrameException;
 import org.jaudiotagger.audio.exceptions.ReadOnlyFileException;
@@ -86,8 +86,8 @@ public class EditorActivity extends Activity {
 
         //get song to edit
         String path;
-        if (getIntent().hasExtra(PlayerActivity.CURRENT_SONG)) {
-            path = getIntent().getStringExtra(PlayerActivity.CURRENT_SONG);
+        if (getIntent().hasExtra(PlayerFragment.CURRENT_SONG)) {
+            path = getIntent().getStringExtra(PlayerFragment.CURRENT_SONG);
             loadSong(path);
         }
     }

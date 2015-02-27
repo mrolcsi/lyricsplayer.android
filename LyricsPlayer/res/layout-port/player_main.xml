@@ -64,6 +64,7 @@
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/llSongInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/btnPlayPause"
@@ -129,8 +130,7 @@
         android:layout_above="@+id/sbProgress"
         android:layout_margin="@dimen/margin_medium"
         android:layout_toLeftOf="@+id/btnPlayPause"
-        android:src="@drawable/player_prev"
-        android:visibility="gone" />
+        android:src="@drawable/player_prev" />
 
     <ImageButton
         android:id="@+id/btnPlayPause"
@@ -147,8 +147,7 @@
         android:layout_above="@+id/sbProgress"
         android:layout_margin="@dimen/margin_medium"
         android:layout_toRightOf="@+id/btnPlayPause"
-        android:src="@drawable/player_next"
-        android:visibility="gone" />
+        android:src="@drawable/player_next" />
 
     <TextView
         android:id="@+id/tvElapsedTime"

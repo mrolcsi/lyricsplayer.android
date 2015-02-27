@@ -1,13 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Themes -->
+
     <style name="LyricsPlayer" parent="android:Theme.DeviceDefault.Light">
+        <item name="android:actionBarStyle">@style/LyricsPlayer.ActionBarStyle</item>
+        <item name="actionBarStyle">@style/LyricsPlayer.ActionBarStyle</item>
+        <!--<item name="drawerArrowStyle">@style/LyricsPlayer.DrawerArrowStyle</item>-->
+
         <item name="android:imageButtonStyle">@style/LyricsPlayer.ImageButton</item>
     </style>
 
     <style name="LyricsPlayer.NoActionBar" parent="android:Theme.DeviceDefault.Light.NoActionBar">
         <item name="android:imageButtonStyle">@style/LyricsPlayer.ImageButton</item>
     </style>
+
+    <!-- Styles -->
+
+    <style name="LyricsPlayer.ActionBarStyle" parent="android:Widget.Holo.Light.ActionBar">
+        <item name="android:background">@color/drawer_background</item>
+        <item name="android:displayOptions">showHome|homeAsUp|showTitle</item>
+        <item name="android:icon">@android:color/transparent</item>
+        <item name="android:windowActionBarOverlay">true</item>
+
+        <item name="background">@color/drawer_background</item>
+        <item name="displayOptions">showHome|homeAsUp|showTitle</item>
+        <item name="icon">@android:color/transparent</item>
+        <item name="windowActionBarOverlay">true</item>
+    </style>
+
+    <style name="LyricsPlayer.DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="android:paddingLeft">@dimen/margin_small</item>
+        <item name="paddingStart">@dimen/margin_small</item>
+    </style>
+
+    <!-- Standard Widgets -->
 
     <style name="LyricsPlayer.ImageButton">
         <item name="android:background">@android:color/transparent</item>

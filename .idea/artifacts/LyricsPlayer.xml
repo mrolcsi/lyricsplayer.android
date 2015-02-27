@@ -1,12 +1,12 @@
 <component name="ArtifactManager">
-  <artifact type="apk" build-on-make="true" name="LyricsPlayer">
+  <artifact type="apk" name="LyricsPlayer">
     <output-path>$PROJECT_DIR$/</output-path>
     <properties id="android-properties">
       <options>
         <option name="keyStoreUrl" value="file://" />
         <option name="proGuardCfgFiles">
           <list>
-            <option value="file://$PROJECT_DIR$/../../SDK/tools/proguard/proguard-android.txt" />
+            <option value="file://%MODULE_SDK_HOME%/tools/proguard/proguard-android.txt" />
           </list>
         </option>
       </options>
